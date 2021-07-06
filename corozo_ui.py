@@ -168,5 +168,5 @@ class CorozoUI(tk.Frame):
     if __name__ == '__main__':
 
         """
-        If you have to debug and test of the CorozoUI class methods, please do it under this block.
+        If you have to debug and test any of the CorozoUI class methods, please do it in this block.
         """
