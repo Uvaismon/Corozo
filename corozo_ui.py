@@ -10,6 +10,7 @@ class CorozoUI(tk.Frame):
 
     def log_in(self) -> (str, str):
         """
+        pull-push
         Frame ID: 001
         This method renders a log in window. Returns a tuple consisting of 2 strings in the following order.
         (acct_number, password)
