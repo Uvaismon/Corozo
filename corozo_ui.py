@@ -16,7 +16,7 @@ class CorozoUI(tk.Frame):
         """
         pass
 
-    def home(self, account_number, acct_holder_name, acct_type, balance) -> int:
+    def home(self, account_number: int, acct_holder_name: str, acct_type: str, balance: float) -> int:
         """
         Frame ID: 002
         This method renders the home window. It takes in the following arguments.
@@ -61,7 +61,7 @@ class CorozoUI(tk.Frame):
         """
         pass
 
-    def close_account(self, acct_number, balance) -> str:
+    def close_account(self, acct_number: int, balance: float) -> str:
         """
         Frame ID: 006
         This method renders the close account window. It takes in the following arguments.
@@ -71,7 +71,7 @@ class CorozoUI(tk.Frame):
         """
         pass
 
-    def account_statement(self, acct_number, acct_type, trans_list) -> None:
+    def account_statement(self, acct_number: int, acct_type: str, trans_list: list) -> None:
         """
         Frame ID: 007
         This method renders the window that displays the users account statement.
