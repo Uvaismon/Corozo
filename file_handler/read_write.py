@@ -1,4 +1,4 @@
-class CorozoFileHandler:
+class ReadWrite:
 
     def __init__(self):
         pass
