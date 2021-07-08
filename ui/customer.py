@@ -7,16 +7,24 @@ class Customer:
     def __init__(self):
         pass
 
-    def log_in(self) -> (str, str):
+    @staticmethod
+    def log_in(self):
         """
         pull-push
         Frame ID: 001
-        This method renders a log in window. Returns a tuple consisting of 2 strings in the following order.
-        (acct_number, password)
+        This method renders a log in window.
+        This method calls the login handler when the user clicks Log In button and
+            Admin portal handler if user clicks admin button.
         """
-        pass
 
-    def home(self, account_number: int, acct_holder_name: str, acct_type: str, balance: float) -> int:
+        def log_in():
+            pass
+
+        def admin():
+            pass
+
+    @staticmethod
+    def home(account_number: int, acct_holder_name: str, acct_type: str, balance: float):
         """
         Frame ID: 002
         This method renders the home window. It takes in the following arguments.
@@ -25,53 +33,77 @@ class Customer:
         account type -> [Savings, Current],
         account balance -> float.
         The window provides 2 choices to the users.
-        The return value is a 0 or 1 depending on the choice selected by the user.
-        Transact -> 0,
-        Settings -> 1
+        The method calls transaction handler if user clicks transact button and settings handler
+            if user clicks settings button.
         """
-        pass
 
-    def settings(self) -> int:
+        def transact():
+            pass
+
+        def settings():
+            pass
+
+    @staticmethod
+    def settings(self):
         """
         Frame ID: 003
         This method renders the account settings window.
-        It provides 2 choices to the users. The return value is a 0 or 1 depending on the choice selected by the user.
-        Change password -> 0,
-        Close account -> 1
+        It provides 2 choices to the users.
+        The method calls password changing window if users clicks change password button and account closing window
+            if user clicks close account button.
         """
-        pass
 
-    def transact(self) -> int:
+        def change_password_window():
+            pass
+
+        def close_account_window():
+            pass
+
+    @staticmethod
+    def transact(self):
         """
         Frame ID: 004
         This method render the transaction window. The user will be given 3 options.
-        The return value of the method depends on the option selected by the user.
-        Account Statement -> 0,
-        Search Transaction -> 1,
-        Send money -> 2
+        The is method calls account statement manager if user clicks on account statement button,
+            transaction searching window if user clicks on search transaction button and
+            money sending window if user clicks on send money button.
         """
-        pass
 
-    def change_password(self) -> (str, str):
+        def account_statement():
+            pass
+
+        def search_transaction_window():
+            pass
+
+        def send_money_window():
+            pass
+
+    @staticmethod
+    def change_password():
         """
         Frame ID: 005
         This method renders window that lets users to change password.
-        Return value is a 2 elements tuple consisting of the ols password and new password in the following order.
-        (old_password, new_password)
+        This method calls password changer when user clicks submit button to change password.
         """
-        pass
 
-    def close_account(self, acct_number: int, balance: float) -> str:
+        def change_password():
+            pass
+
+    @staticmethod
+    def close_account(self, acct_number: int, balance: float):
         """
         Frame ID: 006
         This method renders the close account window. It takes in the following arguments.
         account number -> int,
         account balance -> float
-        It returns the password as a string entered by the user as a confirmation to close their account.
+        This method calls close account manager if user chooses to close account:
         """
-        pass
 
-    def account_statement(self, acct_number: int, acct_type: str, trans_list: list) -> None:
+        def close_account():
+            pass
+
+    @staticmethod
+    def account_statement(self, acct_number: int, acct_type: str, trans_list: list):
         """
         Frame ID: 007
         This method renders the window that displays the users account statement.
@@ -79,33 +111,31 @@ class Customer:
         account number -> int,
         account type -> str
         transaction list -> list of transactions
-        This method does not return any value.
         """
         pass
 
-    def search_transactions(self) -> (datetime.date, datetime.date, int):
+    @staticmethod
+    def search_transactions(self):
         """
         Frame ID: 008
-        This method renders the window that displays the that lets users filter their transactions based on time
+        This method renders the window that displays that lets users filter their transactions based on time
         period and type of transaction.
-        It return a tuple with 3 elements as follows.
-        (from_date, to_date, type)
-        from -> datetime.date
-        to -> datetime.date
-        type -> 0 (if the type is deposit), 1 (if the type is withdrawal)
+        This method calls transaction filtering window.
         """
-        pass
 
+        def filter_transaction():
+            pass
+
+    @staticmethod
     def send_money(self) -> (int, float):
         """
         Frame ID: 009
         This method renders the window that lets users send money to another account.
-        This method returns the account number and the amount to be transferred as follows.
-        (account_number, balance)
-        account_number -> int
-        balance -> float
+        This method calls money sending handler.
         """
-        pass
+
+        def send_money():
+            pass
 
 
 if __name__ == '__main__':
