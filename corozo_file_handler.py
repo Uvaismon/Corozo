@@ -1,6 +1,4 @@
-
-
-class CorozoBackend:
+class CorozoFileHandler:
 
     def __init__(self):
         pass
@@ -17,14 +15,15 @@ class CorozoBackend:
         """
         pass
 
-    def file_reader(self, file_name: str, offset: int, number_or_records: None) -> list[str]:
+    def file_reader(self, file_name: str, offset=0, number_or_records=None) -> list[str]:
         """
         This function performs all the operations of reading data from the file.
         It takes 3 arguments of which 1 is a default argument.
         file_name -> Name of the file to be read from.
-        offset -> byte location from which the function should read data.
+        offset -> byte location from which the function should read data. If this is not passed, the function reads
+            from the beginning.
         number_of_records -> number of records to be read. If this argument is not passed, the function reads till the
-        end of the file.
+            end of the file.
         Returns the data read as a list of records.
         """
         pass
@@ -41,3 +40,4 @@ class CorozoBackend:
         This function can take in a string of fields and return a list of individual fields after unpacking it.
         """
         pass
+
