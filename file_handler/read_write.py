@@ -3,7 +3,7 @@ class ReadWrite:
     def __init__(self):
         pass
 
-    def file_writer(self, file_name: str, data: int, byte_loc=None) -> int:
+    def file_writer(self, file_name: str, data: int, byte_loc=None):
         """
         This function performs all operations of writing data to any file.
         It takes 3 arguments of which 1 is a default argument.

@@ -8,7 +8,7 @@ class Customer:
         pass
 
     @staticmethod
-    def log_in(self):
+    def log_in():
         """
         pull-push
         Frame ID: 001
@@ -44,7 +44,7 @@ class Customer:
             pass
 
     @staticmethod
-    def settings(self):
+    def settings():
         """
         Frame ID: 003
         This method renders the account settings window.
@@ -60,7 +60,7 @@ class Customer:
             pass
 
     @staticmethod
-    def transact(self):
+    def transact():
         """
         Frame ID: 004
         This method render the transaction window. The user will be given 3 options.
@@ -90,7 +90,7 @@ class Customer:
             pass
 
     @staticmethod
-    def close_account(self, acct_number: int, balance: float):
+    def close_account(acct_number: int, balance: float):
         """
         Frame ID: 006
         This method renders the close account window. It takes in the following arguments.
@@ -103,7 +103,7 @@ class Customer:
             pass
 
     @staticmethod
-    def account_statement(self, acct_number: int, acct_type: str, trans_list: list):
+    def account_statement(acct_number: int, acct_type: str, trans_list: list):
         """
         Frame ID: 007
         This method renders the window that displays the users account statement.
@@ -115,7 +115,7 @@ class Customer:
         pass
 
     @staticmethod
-    def search_transactions(self):
+    def search_transactions():
         """
         Frame ID: 008
         This method renders the window that displays that lets users filter their transactions based on time
@@ -127,7 +127,7 @@ class Customer:
             pass
 
     @staticmethod
-    def send_money(self) -> (int, float):
+    def send_money():
         """
         Frame ID: 009
         This method renders the window that lets users send money to another account.
@@ -142,3 +142,5 @@ if __name__ == '__main__':
     """
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
+
+
