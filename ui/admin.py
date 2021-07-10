@@ -187,7 +187,8 @@ class Admin:
 
         root.mainloop()
     @staticmethod
-    def deposit_withdraw_money(op_type: int):
+    def deposit_withdraw_money():
+        op_type=0
         """
         Frame ID: 014
         This method renders the window that lets admin handle deposits and withdrawal.
@@ -203,6 +204,42 @@ class Admin:
         def deposit():
             pass
 
+        root = Tk()
+        if(op_type==0):
+            root.title('Add Money')
+        else:
+            root.title('Withdraw Money')
+        root.geometry('400x300')
+        root.minsize(400, 300)
+        root.maxsize(600, 400)
+
+        acnt_no = Label(root, text='Account Number :')
+        acnt_no.grid(pady=(50,0), padx=(20,0), column=1, row=1 , sticky=E)
+        acnt_no_entry= Entry(root)
+        acnt_no_entry.grid(pady=(50,0), padx=(20,0), column=2, row=1, sticky=W)
+
+        amount = Label(root, text='Amount :')
+        amount.grid(pady=(10, 0), padx=(20, 0), column=1, row=2, sticky=E)
+        amount_entry = Entry(root)
+        amount_entry.grid(pady=(10, 0), padx=(20, 0), column=2, row=2, sticky=W)
+
+        password = Label(root, text='Password :')
+        password.grid(pady=(10, 0), padx=(20, 0), column=1, row=3, sticky=E)
+        password_entry = Entry(root)
+        password_entry.grid(pady=(10, 0), padx=(20, 0), column=2, row=3, sticky=W)
+
+        add_withdraw_btn= Button(root,text='',command='')
+        add_withdraw_btn.grid(pady=(30,0), padx=(20,0), columnspan=3, row=4 ,sticky=E)
+
+        if ( op_type==0 ):
+            add_withdraw_btn.config(text='Add Money')
+            add_withdraw_btn.config(command=deposit)
+
+        else:
+            add_withdraw_btn.config(text='Withdraw')
+            add_withdraw_btn.config(command=withdraw)
+        root.mainloop()
+
 
 if __name__ == '__main__':
     """
@@ -210,5 +247,6 @@ if __name__ == '__main__':
     
     Admin.admin()
     Admin.admin_control_panel()
-    Admin.new_account()"""
-    Admin.search_transaction_admin()
+    Admin.new_account()
+    Admin.search_transaction_admin()"""
+    Admin.deposit_withdraw_money()
