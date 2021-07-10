@@ -1,6 +1,7 @@
 import datetime
 import tkinter as tk
 from tkinter import *
+from tkinter.ttk import *
 
 class Admin:
 
@@ -90,8 +91,41 @@ class Admin:
         This method calls the account creation handler when the admin clicks on create account button.
         """
 
-        def create_account():
+        def create_account(acnt_type):
             pass
+
+        root = Tk()
+        root.title('New Account')
+        root.geometry('400x300')
+        root.minsize(400, 300)
+        root.maxsize(400, 300)
+
+        name = Label(root,text='Name :')
+        name_entry = Entry(root)
+        name.grid(pady=(30,0), padx=(20,0),column=1, row=1, sticky=E)
+        name_entry.grid(pady=(30,0), padx=(20,0), column=2, row=1, sticky=W)
+
+        acnt_type = Label(root, text='Account Type :')
+        acnt_type.grid(pady=(10,0), padx=(20,0),column=1, row=2, sticky=E)
+
+        items = StringVar(root, '1')
+        values = {
+            "Current": 'current',
+            "Savings": 'savings'
+        }
+        i=2
+        for (text, value) in values.items():
+            Radiobutton(root, text=text, variable=items, value= value).grid(pady=(10,0), padx=(20,0), column=i, row=2, sticky=W)
+            i=i+1
+
+        acnt_pass = Label(root, text='Password :')
+        pass_entry= Entry(root)
+        acnt_pass.grid(pady=(10,0), padx=(20,0), column=1, row=4, sticky=E)
+        pass_entry.grid(pady=(10,0), padx=(20,0), column=2, row=4, sticky=W)
+
+        create_btn= Button(root, text='Create', command=lambda :create_account(items.get()))
+        create_btn.grid(columnspan=4, pady=(30,0), padx=(50,0))
+        root.mainloop()
 
     @staticmethod
     def search_transaction_admin():
@@ -125,6 +159,7 @@ class Admin:
 if __name__ == '__main__':
     """
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
-    """
+    
     Admin.admin()
-    Admin.admin_control_panel()
+    Admin.admin_control_panel()"""
+    Admin.new_account()
