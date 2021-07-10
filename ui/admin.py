@@ -1,7 +1,9 @@
 import datetime
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 from tkinter.ttk import *
+from tkcalendar import *
 
 class Admin:
 
@@ -138,6 +140,52 @@ class Admin:
         def search_transaction():
             pass
 
+
+
+
+        root = Tk()
+        root.title('Search Transactions(Admin)')
+        root.geometry('400x300')
+        root.minsize(400, 300)
+        root.maxsize(600,400)
+
+        def select_date():
+            root.geometry('600x400')
+
+            cal = Calendar(root, selectmode='day', year=2021, month=7, day=15)
+            cal.grid(pady=(10, 0), padx=(20, 0), column=3, row=3, sticky=W)
+
+            def set_date():
+                period_entry.delete(0, END)
+                period_entry.insert(0,cal.get_date())
+                cal.grid_forget()
+                cal_btn.grid_forget()
+                root.geometry('400x300')
+
+                # if period_entry.get()!='':
+                #     cal_btn = Button(root, text='Select', command='')
+                #     cal_btn.grid(pady=(10, 0), padx=(20, 0), column=3, row=2, sticky=E)
+
+            cal_btn.config(command=set_date)
+
+        acnt_no = Label(root, text='Name :')
+        acnt_no_entry = Entry(root)
+        acnt_no.grid(pady=(60, 0), padx=(20, 0), column=1, row=1, sticky=E)
+        acnt_no_entry.grid(pady=(60, 0), padx=(20, 0), column=2, row=1, sticky=W)
+
+        period = Label(root, text='Period :')
+        period.grid(pady=(10, 0), padx=(20, 0), column=1, row=2, sticky=E)
+
+        period_entry = Entry(root)
+        period_entry.grid(pady=(10, 0), padx=(20, 0), column=2, row=2, sticky=E)
+
+        cal_btn= Button(root, text='Select', command=select_date)
+        cal_btn.grid(pady=(10, 0), padx=(20, 0), column=3, row=2, sticky=W)
+
+        search_btn = Button(root, text='Search', command=search_transaction)
+        search_btn.grid(pady=(30, 0), padx=(20, 0), column=2, row=3, sticky=NW)
+
+        root.mainloop()
     @staticmethod
     def deposit_withdraw_money(op_type: int):
         """
@@ -161,5 +209,6 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     
     Admin.admin()
-    Admin.admin_control_panel()"""
-    Admin.new_account()
+    Admin.admin_control_panel()
+    Admin.new_account()"""
+    Admin.search_transaction_admin()
