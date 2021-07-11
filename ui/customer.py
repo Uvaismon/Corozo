@@ -1,6 +1,6 @@
 import datetime
 import tkinter as tk
-
+from tkinter import *
 
 class Customer:
 
@@ -23,6 +23,36 @@ class Customer:
         def admin():
             pass
 
+        root = Tk()
+        root.geometry("400x400")
+        root.minsize(400, 200)
+        root.maxsize(400, 200)
+        root.title("Login")
+        # welcome = Label(root, text="Welcome to Avocado Crypt", font=('Times New Roman', 24), fg='Red', width=80)
+
+        account_number = Label(root, text="Enter Account Number")
+
+        e = Entry(root, width=30)
+
+        Passcode = Label(root, text="Enter Passcode: ")
+        e2 = Entry(root, width=30)
+
+        account_number.grid(row=1, column=0)
+        e.grid(row=1, column=1, padx=10, pady=10)
+
+        Passcode.grid(row=2, column=0)
+        e2.grid(row=2, column=1, padx=10, pady=10)
+
+
+        my_button = Button(root, text="LOGIN", command=log_in)
+        my_button.grid(row=3, column=1)
+        # welcome.grid(row=0, column=0)
+
+        Admin_Button = Button(root, text="ADMIN", command=admin())
+        Admin_Button.grid(row=4, column=3)
+
+        root.mainloop()
+
     @staticmethod
     def home(account_number: int, acct_holder_name: str, acct_type: str, balance: float):
         """
@@ -42,6 +72,8 @@ class Customer:
 
         def settings():
             pass
+
+
 
     @staticmethod
     def settings():
@@ -143,4 +175,4 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-
+    Customer.log_in()
