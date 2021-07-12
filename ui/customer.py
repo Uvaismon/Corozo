@@ -25,6 +25,7 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Log In')
         root.geometry("400x400")
         root.minsize(400, 200)
         root.maxsize(400, 200)
@@ -35,26 +36,26 @@ class Customer:
 
         e = Entry(root, width=30)
 
-        Passcode = Label(root, text="Enter Passcode: ")
+        passcode = Label(root, text="Enter Passcode: ")
         e2 = Entry(root, width=30)
 
         account_number.grid(row=1, column=0)
         e.grid(row=1, column=1, padx=10, pady=10)
 
-        Passcode.grid(row=2, column=0)
+        passcode.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
         my_button = Button(root, text="LOGIN", command=log_in)
         my_button.grid(row=3, column=1)
         # welcome.grid(row=0, column=0)
 
-        Admin_Button = Button(root, text="ADMIN", command=admin())
-        Admin_Button.grid(row=4, column=3)
+        admin_button = Button(root, text="ADMIN", command=admin())
+        admin_button.grid(row=4, column=3)
 
         root.mainloop()
 
     @staticmethod
-    def home(account_number: int, acct_holder_name: str, acct_type: str, balance: float):
+    def home(acct_number: int, acct_holder_name: str, acct_type: str, balance: float):
         """
         Frame ID: 002
         This method renders the home window. It takes in the following arguments.
@@ -74,35 +75,36 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Home')
         root.geometry("400x400")
         root.minsize(400, 400)
         root.maxsize(400, 400)
         root.title("Home")
 
-        AccountNumber = Label(root, text="Enter Account Number")
+        account_number = Label(root, text="Enter Account Number")
 
-        e1 = Label(root, text=account_number, width=30)
+        e1 = Label(root, text=acct_number, width=30)
 
-        Accountholdername = Label(root, text="Enter Name: ")
+        account_holder_name = Label(root, text="Enter Name: ")
         e2 = Label(root, text=acct_holder_name, width=30)
 
-        AccountNumber.grid(row=1, column=0)
+        account_number.grid(row=1, column=0)
         e1.grid(row=1, column=1, padx=10, pady=10)
 
-        Accountholdername.grid(row=2, column=0)
+        account_holder_name.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        Accounttype = Label(root, text="Choose account type")
+        account_type = Label(root, text="Choose account type")
 
         e3 = Label(root, text=acct_type, width=30)
 
-        AccountBalance = Label(root, text="The balance is: ")
+        account_balance = Label(root, text="The balance is: ")
         e4 = Label(root, text=balance, width=30)
 
-        Accounttype.grid(row=3, column=0)
+        account_type.grid(row=3, column=0)
         e3.grid(row=3, column=1, padx=10, pady=10)
 
-        AccountBalance.grid(row=4, column=0)
+        account_balance.grid(row=4, column=0)
         e4.grid(row=4, column=1, padx=10, pady=10)
 
         transact = Button(root, text="Transact", command=transact)
@@ -129,20 +131,15 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Settings')
         root.geometry("400x400")
         root.minsize(400, 200)
         root.maxsize(400, 200)
 
-        def Change_password():
-            Change_password()
+        change_password = Button(root, text="Change Password", command=change_password_window)
+        change_password.grid(row=1, column=0, padx=20, pady=15)
 
-        def close_account():
-            close_account()
-
-        Change_password = Button(root, text="Change Password", command=Change_password)
-        Change_password.grid(row=1, column=0, padx=20, pady=15)
-
-        close_account = Button(root, text="Close Account", command=close_account)
+        close_account = Button(root, text="Close Account", command=close_account_window)
         close_account.grid(row=2, column=0, padx=20, pady=15)
 
         root.mainloop()
@@ -167,6 +164,7 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Transact')
         root.geometry("400x400")
         root.minsize(400, 200)
         root.maxsize(400, 200)
@@ -194,6 +192,7 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Change password')
         root.geometry("400x400")
         root.minsize(400, 200)
         root.maxsize(400, 200)
@@ -236,31 +235,26 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Close account')
 
-        Account_Number = 12345
-        Account_Balance = 1220
-        password = "xyzxyz"
+        account_number = Label(root, text="Enter Account Number")
 
-        AccountNumber = Label(root, text="Enter Account Number")
+        e1 = Label(root, text=acct_number, width=30)
 
-        e1 = Label(root, text=Account_Number, width=30)
-
-        AccountBalance = Label(root, text="Account Balance is : ")
-        e2 = Label(root, text=Account_Balance, width=30)
+        account_balance = Label(root, text="Account Balance is : ")
+        e2 = Label(root, text=balance, width=30)
 
         Password = Label(root, text="Enter Password")
         e3 = Entry(root, width=30)
 
-        AccountNumber.grid(row=1, column=0)
+        account_number.grid(row=1, column=0)
         e1.grid(row=1, column=1, padx=10, pady=10)
 
-        AccountBalance.grid(row=2, column=0)
+        account_balance.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
         Password.grid(row=3, column=0)
         e3.grid(row=3, column=1, padx=10, pady=10)
-
-
 
         close_account = Button(root, text="Close", command=close_account)
         close_account.grid(row=4, column=0, padx=30, pady=15)
@@ -303,27 +297,27 @@ class Customer:
             pass
 
         root = Tk()
+        root.title('Send money')
 
-
-
-        AccountNumber = Label(root, text="Enter Account Number")
+        account_number = Label(root, text="Enter Account Number")
 
         e1 = Entry(root, width=30)
 
-        Amount = Label(root, text="Enter Amount")
+        amount = Label(root, text="Enter Amount")
 
         e2 = Entry(root, width=30)
 
-        AccountNumber.grid(row=1, column=0)
+        account_number.grid(row=1, column=0)
         e1.grid(row=1, column=1, padx=10, pady=10)
 
-        Amount.grid(row=2, column=0)
+        amount.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
         send = Button(root, text="Send", command=send_money)
         send.grid(row=3, column=0, padx=10, pady=10)
 
         root.mainloop()
+
 
 if __name__ == '__main__':
     """
