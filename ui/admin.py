@@ -143,30 +143,38 @@ class Admin:
 
         root = Tk()
         root.title('Search Transactions(Admin)')
-        root.geometry('400x300')
-        root.minsize(400, 300)
-        root.maxsize(600, 400)
+        root.geometry('500x300')
+        root.minsize(500, 300)
+        root.maxsize(500,400)
 
-        def select_date():
+        def select_date(i):
             root.geometry('600x400')
-
             cal = Calendar(root, selectmode='day', year=2021, month=7, day=15)
-            cal.grid(pady=(10, 0), padx=(20, 0), column=3, row=3, sticky=W)
+            if i==0:
+                cal.grid(pady=(10, 0), padx=(20, 0), columnspan=4, row=3, sticky=W)
+            else:
+                cal.grid(pady=(10, 0), padx=(20, 0), columnspan=7, row=3, sticky=E)
 
-            def set_date():
-                period_entry.delete(0, END)
-                period_entry.insert(0, cal.get_date())
+            def set_date(i):
+                if i==0:
+                    from_entry.delete(0, END)
+                    from_entry.insert(0, cal.get_date())
+                    set_from.grid_forget()
+
+                else:
+                    to_entry.delete(0, END)
+                    to_entry.insert(0, cal.get_date())
+                    set_to.grid_forget()
                 cal.grid_forget()
-                cal_btn.grid_forget()
                 root.geometry('400x300')
 
-                # if period_entry.get()!='':
-                #     cal_btn = Button(root, text='Select', command='')
-                #     cal_btn.grid(pady=(10, 0), padx=(20, 0), column=3, row=2, sticky=E)
+            if i==0:
+                set_from.config(command=lambda :set_date(i))
+            else:
+                set_to.config(command=lambda :set_date(i))
 
-            cal_btn.config(command=set_date)
 
-        acnt_no = Label(root, text='Name :')
+        acnt_no = Label(root, text='Account Number :')
         acnt_no_entry = Entry(root)
         acnt_no.grid(pady=(60, 0), padx=(20, 0), column=1, row=1, sticky=E)
         acnt_no_entry.grid(pady=(60, 0), padx=(20, 0), column=2, row=1, sticky=W)
@@ -174,14 +182,20 @@ class Admin:
         period = Label(root, text='Period :')
         period.grid(pady=(10, 0), padx=(20, 0), column=1, row=2, sticky=E)
 
-        period_entry = Entry(root)
-        period_entry.grid(pady=(10, 0), padx=(20, 0), column=2, row=2, sticky=E)
+        from_entry = Entry(root, text='')
+        from_entry.grid(pady=(10, 0), row=2, column=2, sticky=E)
 
-        cal_btn = Button(root, text='Select', command=select_date)
-        cal_btn.grid(pady=(10, 0), padx=(20, 0), column=3, row=2, sticky=W)
+        to_entry = Entry(root, text='')
+        to_entry.grid(pady=(10, 0), row=2, column=4, padx=(20, 0))
+
+        set_to = Button(root, text='Set', command=lambda: select_date(1))
+        set_to.grid(pady=(10, 0), row=2, column=5, padx=(10, 0), sticky=W)
+
+        set_from = Button(root, text='Set', command=lambda: select_date(0))
+        set_from.grid(pady=(10, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
         search_btn = Button(root, text='Search', command=search_transaction)
-        search_btn.grid(pady=(30, 0), padx=(20, 0), column=2, row=3, sticky=NW)
+        search_btn.grid(pady=(30, 0), padx=(20, 0), column=2, row=3, sticky=W)
 
         root.mainloop()
 
