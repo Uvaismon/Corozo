@@ -1,10 +1,11 @@
 import datetime
 
-import sys
-sys.path.append('/...')
-
 from meta import *
 from file_handler import *
+
+import sys
+
+sys.path.append('/...')
 
 
 class AccountFileHandler:
@@ -32,10 +33,13 @@ class AccountFileHandler:
                                   balance,
                                   password]
                                  )
+        UniversalData.update_next_account_number()
 
 
 if __name__ == '__main__':
     """
     Debugging area
     """
-    # AccountFileHandler.create_account('Uvais', 'savings', 'abc123')
+    AccountFileHandler.create_account('Tester1', 'current', 'abc456')
+    AccountFileHandler.create_account('Tester2', 'savings', 'dfsf5454')
+    AccountFileHandler.create_account('Tester3', 'current', 'sdfd1202')

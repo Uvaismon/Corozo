@@ -1,4 +1,6 @@
 from typing import Union
+from constants import *
+import os
 
 FIELD_SEPARATOR = '|'
 RECORD_SEPARATOR = '\n'
@@ -17,7 +19,8 @@ class ReadWrite:
         """
         file = None
         try:
-            file = open(file_name, 'a')
+            file_path = os.path.join(CUSTOMER_DATA_DIRECTORY, file_name)
+            file = open(file_path, 'a')
             offset = file.tell()
             file.write(data)
             file.write(RECORD_SEPARATOR)
