@@ -8,7 +8,7 @@ import sys
 sys.path.append('/...')
 
 
-class AccountFileHandler:
+class UserAccountFileHandler:
 
     @staticmethod
     def create_account(account_holder_name: str, account_type: str, password: str) -> None:
@@ -40,6 +40,6 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-    AccountFileHandler.create_account('Tester1', 'current', 'abc456')
-    AccountFileHandler.create_account('Tester2', 'savings', 'dfsf5454')
-    AccountFileHandler.create_account('Tester3', 'current', 'sdfd1202')
+    UserAccountFileHandler.create_account('Tester1', 'current', 'abc456')
+    UserAccountFileHandler.create_account('Tester2', 'savings', 'dfsf5454')
+    UserAccountFileHandler.create_account('Tester3', 'current', 'sdfd1202')
