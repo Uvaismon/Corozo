@@ -8,9 +8,6 @@ from tkcalendar import *
 
 class Admin:
 
-    def init(self):
-        pass
-
     @staticmethod
     def admin():
         """
@@ -27,7 +24,7 @@ class Admin:
         root.minsize(400, 300)
         root.maxsize(400, 300)
         login = Label(root, text="Log In")
-        login.config(font=(44))
+        login.config(font=44)
         login.grid(pady=(20, 0), padx=(170, 0), columnspan=3)
 
         admin_id = Label(root, text='Admin Id : ')

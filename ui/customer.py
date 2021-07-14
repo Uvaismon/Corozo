@@ -3,10 +3,8 @@ import tkinter as tk
 from tkinter import *
 from tkcalendar import *
 
-class Customer:
 
-    def __init__(self):
-        pass
+class Customer:
 
     @staticmethod
     def log_in():
@@ -294,13 +292,13 @@ class Customer:
         def select_date(i):
             root.geometry('600x400')
             cal = Calendar(root, selectmode='day', year=2021, month=7, day=15)
-            if i==0:
+            if i == 0:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=4, row=3, sticky=W)
             else:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=7, row=3, sticky=E)
 
             def set_date(i):
-                if i==0:
+                if i == 0:
                     from_entry.delete(0, END)
                     from_entry.insert(0, cal.get_date())
                     set_from.grid_forget()
@@ -312,33 +310,33 @@ class Customer:
                 cal.grid_forget()
                 root.geometry('400x300')
 
-            if i==0:
-                set_from.config(command=lambda :set_date(i))
+            if i == 0:
+                set_from.config(command=lambda: set_date(i))
             else:
-                set_to.config(command=lambda :set_date(i))
+                set_to.config(command=lambda: set_date(i))
 
         by_date = Label(root, text='By Date :')
-        by_date.grid(pady=(5,0), padx=(20,0), row=2, column=1, sticky=E)
+        by_date.grid(pady=(5, 0), padx=(20, 0), row=2, column=1, sticky=E)
 
-        from_label= Label(root, text='From')
-        to_label= Label(root, text="To")
-        from_label.grid(pady=(50,0), row=1, column=2, sticky=W)
-        to_label.grid(pady=(50,0), row=1, column=4, padx=(20,0), sticky=W)
+        from_label = Label(root, text='From')
+        to_label = Label(root, text="To")
+        from_label.grid(pady=(50, 0), row=1, column=2, sticky=W)
+        to_label.grid(pady=(50, 0), row=1, column=4, padx=(20, 0), sticky=W)
 
         from_entry = Entry(root, text='')
-        from_entry.grid(pady=(5,0), row=2, column=2)
+        from_entry.grid(pady=(5, 0), row=2, column=2)
 
-        to_entry = Entry(root , text='')
-        to_entry.grid(pady=(5,0), row=2, column=4, padx=(20,0))
+        to_entry = Entry(root, text='')
+        to_entry.grid(pady=(5, 0), row=2, column=4, padx=(20, 0))
 
-        set_to = Button(root, text='Set', command=lambda :select_date(1))
-        set_to.grid(pady=(5,0), row=2, column=5, padx=(10,0), sticky=W)
+        set_to = Button(root, text='Set', command=lambda: select_date(1))
+        set_to.grid(pady=(5, 0), row=2, column=5, padx=(10, 0), sticky=W)
 
-        set_from= Button(root, text ='Set', command=lambda :select_date(0))
-        set_from.grid(pady=(5,0), row=2, column=3, padx=(10,0), sticky=W)
+        set_from = Button(root, text='Set', command=lambda: select_date(0))
+        set_from.grid(pady=(5, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
-        acnt_type= Label(root, text='Account Type :')
-        acnt_type.grid(pady=(20,0), padx=(20,0), sticky=E, row=4, column=1)
+        acnt_type = Label(root, text='Account Type :')
+        acnt_type.grid(pady=(20, 0), padx=(20, 0), sticky=E, row=4, column=1)
 
         items = StringVar(root, '1')
         values = {
@@ -351,8 +349,9 @@ class Customer:
                                                                            sticky=E)
             i = i + 2
         search = Button(root, text="Search", command=filter_transaction)
-        search.grid(columnspan=6, pady=(30,0), padx=(20,0), sticky=E)
+        search.grid(columnspan=6, pady=(30, 0), padx=(20, 0), sticky=E)
         root.mainloop()
+
     @staticmethod
     def send_money():
         """

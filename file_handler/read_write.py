@@ -1,21 +1,33 @@
+from typing import Union
+
+FIELD_SEPARATOR = '|'
+RECORD_SEPARATOR = '\n'
+
+
 class ReadWrite:
 
-    def __init__(self):
-        pass
-
-    def file_writer(self, file_name: str, data: int, byte_loc=None):
+    @staticmethod
+    def file_writer(file_name: str, data: str) -> int:
         """
         This function performs all operations of writing data to any file.
-        It takes 3 arguments of which 1 is a default argument.
+        It takes 2 arguments of which 1 is a default argument.
         file_name -> the name of the file to which the function should write.
         data -> data to be written to the file.
-        byte_loc -> offset where the data should be written. If byte_loc is not passed, it appends the data to the end
-            of the file.
-        Return 0 if writing is successful, 1 otherwise.
+        Returns byte offset of the record written to the file.
         """
-        pass
+        file = None
+        try:
+            file = open(file_name, 'a')
+            offset = file.tell()
+            file.write(data)
+            file.write(RECORD_SEPARATOR)
+            return offset
 
-    def file_reader(self, file_name: str, offset=0, number_or_records=None) -> list[str]:
+        finally:
+            file.close()
+
+    @staticmethod
+    def file_reader(file_name: str, offset=0, number_or_records=None) -> list:
         """
         This function performs all the operations of reading data from the file.
         It takes 3 arguments of which 1 is a default argument.
@@ -24,20 +36,45 @@ class ReadWrite:
             from the beginning.
         number_of_records -> number of records to be read. If this argument is not passed, the function reads till the
             end of the file.
-        Returns the data read as a list of records.
+        Returns the data read as a list of strings, empty list if the read fails
         """
-        pass
+        file = None
+        try:
+            file = open(file_name)
+            file.seek(offset)
+            if not number_or_records:
+                return file.readlines()
+            lines = []
+            for line in range(number_or_records):
+                lines.append(file.readline())
+            return lines
 
-    def pack(self, data_list: list) -> str:
+        except FileNotFoundError:
+            return []
+
+        finally:
+            if file:
+                file.close()
+
+    @staticmethod
+    def pack(data_list: list) -> str:
         """
         This function is used to construct field structure. It can take in a list of data and return a string after
         transforming the list of data into str of fields.
         """
-        pass
+        return FIELD_SEPARATOR.join(data_list)
 
-    def unpack(self, data_string) -> list:
+    @staticmethod
+    def unpack(data_string) -> list:
         """
         This function can take in a string of fields and return a list of individual fields after unpacking it.
         """
-        pass
+        return data_string.split(FIELD_SEPARATOR)
 
+
+if __name__ == "__main__":
+    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
+    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['456', 'Test', 'C'])))
+    # data = ReadWrite.file_reader('test.txt')
+    # for datum in data:
+    #     print(ReadWrite.unpack(datum))
