@@ -71,8 +71,22 @@ class ReadWrite:
         """
         return data_string.split(FIELD_SEPARATOR)
 
+    @staticmethod
+    def insert(file_name: str, data: list) -> int:
+        """
+        This method takes in a list of fields and add the record to the file.
+        :param file_name: Name of the file to insert data.
+        :param data: record fields are list.
+        :return: byte offset of the beginning of the record.
+        """
+        data_string = ReadWrite.pack(data)
+        return ReadWrite.file_writer(file_name, data_string)
+
 
 if __name__ == "__main__":
+    """
+    Debugging block
+    """
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['456', 'Test', 'C'])))
     # data = ReadWrite.file_reader('test.txt')

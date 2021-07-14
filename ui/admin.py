@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 # from tkinter.ttk import *
 from tkcalendar import *
+from file_handler import ReadWrite
 
 
 class Admin:
@@ -90,8 +91,8 @@ class Admin:
         This method calls the account creation handler when the admin clicks on create account button.
         """
 
-        def create_account(acnt_type):
-            pass
+        def create_account():
+            print(items.get())
 
         root = Tk()
         root.title('New Account')
@@ -123,7 +124,7 @@ class Admin:
         acnt_pass.grid(pady=(10, 0), padx=(20, 0), column=1, row=4, sticky=E)
         pass_entry.grid(pady=(10, 0), padx=(20, 0), column=2, row=4, sticky=W)
 
-        create_btn = Button(root, text='Create', command=lambda: create_account(items.get()))
+        create_btn = Button(root, text='Create', command=create_account)
         create_btn.grid(columnspan=4, pady=(30, 0), padx=(50, 0))
         root.mainloop()
 
@@ -142,18 +143,18 @@ class Admin:
         root.title('Search Transactions(Admin)')
         root.geometry('500x300')
         root.minsize(500, 300)
-        root.maxsize(500,400)
+        root.maxsize(500, 400)
 
         def select_date(i):
             root.geometry('600x400')
             cal = Calendar(root, selectmode='day', year=2021, month=7, day=15)
-            if i==0:
+            if i == 0:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=4, row=3, sticky=W)
             else:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=7, row=3, sticky=E)
 
             def set_date(i):
-                if i==0:
+                if i == 0:
                     from_entry.delete(0, END)
                     from_entry.insert(0, cal.get_date())
                     set_from.grid_forget()
@@ -165,11 +166,10 @@ class Admin:
                 cal.grid_forget()
                 root.geometry('400x300')
 
-            if i==0:
-                set_from.config(command=lambda :set_date(i))
+            if i == 0:
+                set_from.config(command=lambda: set_date(i))
             else:
-                set_to.config(command=lambda :set_date(i))
-
+                set_to.config(command=lambda: set_date(i))
 
         acnt_no = Label(root, text='Account Number :')
         acnt_no_entry = Entry(root)
@@ -255,9 +255,14 @@ if __name__ == '__main__':
     """
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
-    
-    Admin.admin()
-    Admin.admin_control_panel()
+
+    # Admin.admin()
+    # Admin.admin_control_panel()
     Admin.new_account()
-    Admin.search_transaction_admin()
-    Admin.deposit_withdraw_money()
+    # Admin.search_transaction_admin()
+    # Admin.deposit_withdraw_money()
+    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
+    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['456', 'Test', 'C'])))
+    # data = ReadWrite.file_reader('test.txt')
+    # for datum in data:
+    #     print(ReadWrite.unpack(datum))
