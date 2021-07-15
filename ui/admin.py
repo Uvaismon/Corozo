@@ -1,10 +1,5 @@
-import datetime
-import tkinter as tk
 from tkinter import *
-from tkinter import ttk
-# from tkinter.ttk import *
 from tkcalendar import *
-from file_handler import ReadWrite
 from account_manager.user_account_handler import UserAccountFileHandler
 import sys
 

@@ -35,6 +35,35 @@ class UserAccountFileHandler:
                                  )
         UniversalData.update_next_account_number()
 
+    @staticmethod
+    def delete_account(account_number: int) -> None:
+        """
+        This method is used to delete or close a user account.
+        :param account_number: Account number of the account to be deleted.
+        :return: None
+        """
+        pass
+
+    @staticmethod
+    def authenticate(account_number: int, password: str):
+        """
+        This method is used to authenticate the customers.
+        :param account_number: account number of the customer
+        :param password: password of the customer
+        :return: 1 if credentials are matched, 0 otherwise.
+        """
+        pass
+
+    @staticmethod
+    def update_balance(account_number: int, update_amount) -> int:
+        """
+        Updates account balance of the user.
+        :param account_number: account number of the user
+        :param update_amount: amount to be deposited(if positive) or deducted(if negative) from the account.
+        :return: 1 if successfully updated, 0 otherwise.
+        """
+        pass
+
 
 if __name__ == '__main__':
     """
