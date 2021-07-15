@@ -46,19 +46,24 @@ class UniversalData:
         :param file_name: latest file name to be set as the current account file
         :return: None
         """
-        pass
+        with open(universal_meta_file_path) as data_file:
+            data = json.load(data_file)
+        data['current_customer_account_file'] = file_name
+        with open(universal_meta_file_path, 'w') as data_file:
+            json.dump(data, data_file)
 
 
 if __name__ == '__main__':
     """
     Initial setup
     """
-
+    # Universal data initialization
     universal_data = {
         'next_account_number': '1',
-        'current_customer_account_file': 'data1.txt'
+        'current_customer_account_file': '1.txt'
     }
 
-    uni_data_file = open(universal_meta_file_path, 'w')
-    json.dump(universal_data, uni_data_file)
-    uni_data_file.close()
+    with open(universal_meta_file_path, 'w') as uni_data_file:
+        json.dump(universal_data, uni_data_file)
+
+
