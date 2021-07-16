@@ -2,4 +2,7 @@
 This package performs all file handling tasks.
 """
 
-from .read_write import ReadWrite
+from file_handler.indexer import Indexer
+from file_handler.read_write import ReadWrite
+
+customer_indexer = Indexer("customer")

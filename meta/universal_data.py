@@ -63,6 +63,7 @@ class UniversalData:
         meta_data = self.__get_meta()
         meta_data['current_account_file'] = str(int(meta_data['current_account_file']) + 1)
         self.__write_meta(meta_data)
+        self.reset_block_size()
 
     def get_free_block_size(self) -> int:
         """

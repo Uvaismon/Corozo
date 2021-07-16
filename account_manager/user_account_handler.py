@@ -11,39 +11,53 @@ sys.path.append('/...')
 
 class UserAccountFileHandler:
 
-    @staticmethod
-    def create_account(account_holder_name: str, account_type: str, password: str) -> None:
+    def __init__(self, user):
+        self.user = user
+        if user == 'customer':
+            self.universal_data = universal_customer_data
+            self.data_dir = CUSTOMER_DATA_DIRECTORY
+            self.indexer = customer_indexer
+
+    def __get_data_list(self, data) -> list:
+        """
+        :param: Dictionary of data to be stored
+        :return: List of user data to be stored in file
+        """
+        creation_date = str(datetime.datetime.now())
+        balance = '0' * MAX_DIGITS
+        if self.user == 'customer':
+            data_list = [
+                self.universal_data.get_next_account_number(),
+                data['password'],
+                data['account_holder_name'],
+                data['account_type'],
+                creation_date,
+                balance
+            ]
+        return data_list
+
+    def create_account(self, **data_list) -> None:
         """
         This method handles the account creation process.
-        :param account_holder_name: account_holder_name
-        :param account_type: savings or current
-        :param password: initial password of account holder
+        :param data_list: Dictionary of data related to the customer
         :return: None
         """
 
-        account_number = universal_customer_data.get_next_account_number()
-        creation_date = str(datetime.datetime.now())
-        balance = '0' * MAX_DIGITS
-        if universal_customer_data.get_free_block_size() < 1:
-            universal_customer_data.update_current_account_file()
-            universal_customer_data.reset_block_size()
-        file_name = universal_customer_data.get_current_account_file()
+        account_number = self.universal_data.get_next_account_number()
+        if self.universal_data.get_free_block_size() < 1:
+            self.universal_data.update_current_account_file()
+        file_name = self.universal_data.get_current_account_file()
 
         index = ReadWrite.insert(file_name,
-                                 [account_number,
-                                  account_holder_name,
-                                  account_type,
-                                  creation_date,
-                                  balance,
-                                  password]
+                                 self.data_dir,
+                                 self.__get_data_list(data_list)
                                  )
-        print(index)
+        self.indexer.insert_l1_index(str(account_number), str(index))
 
-        universal_customer_data.update_next_account_number()
-        universal_customer_data.decrement_free_block_size()
+        self.universal_data.update_next_account_number()
+        self.universal_data.decrement_free_block_size()
 
-    @staticmethod
-    def delete_account(account_number: int) -> None:
+    def delete_account(self, account_number: int) -> None:
         """
         This method is used to delete or close a user account.
         :param account_number: Account number of the account to be deleted.
@@ -51,8 +65,7 @@ class UserAccountFileHandler:
         """
         pass
 
-    @staticmethod
-    def authenticate(account_number: int, password: str):
+    def authenticate(self, account_number: int, password: str):
         """
         This method is used to authenticate the customers.
         :param account_number: account number of the customer
@@ -61,8 +74,7 @@ class UserAccountFileHandler:
         """
         pass
 
-    @staticmethod
-    def update_balance(account_number: int, update_amount) -> int:
+    def update_balance(self, account_number: int, update_amount) -> int:
         """
         Updates account balance of the user.
         :param account_number: account number of the user
@@ -76,6 +88,3 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-    UserAccountFileHandler.create_account('Tester1', 'current', 'abc456')
-    UserAccountFileHandler.create_account('Tester2', 'savings', 'dfsf5454')
-    UserAccountFileHandler.create_account('Tester3', 'current', 'sdfd1202')

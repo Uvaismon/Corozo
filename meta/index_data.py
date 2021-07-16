@@ -10,11 +10,12 @@ sys.path.append('/...')
 
 class UserDataIndex:
 
-    def __init__(self, meta_file):
+    def __init__(self, meta_file, index_dir):
         """
         :param meta_file: meta file location of the user
         """
         self.meta_file = meta_file
+        self.index_dir = index_dir
 
     def __level_exists(self, level) -> int:
         """
@@ -57,7 +58,7 @@ class UserDataIndex:
             return -1
 
         meta_data = self.__get_meta()
-        return BLOCK_SIZE - meta_data[lvl]['number_of_entries']
+        return BLOCK_SIZE - int(meta_data[lvl]['number_of_entries'])
 
     def decrement_free_block_size(self, level) -> int:
         """
@@ -121,6 +122,13 @@ class UserDataIndex:
         meta_data[lvl]['current_file_number'] = str(int(meta_data[lvl]['current_file_number']) + 1)
         self.__write_meta(meta_data)
         return 0
+
+    def level_dir(self, level) -> str:
+        """
+        Returns the directory path of the given level of index
+        :param level: Level of index
+        :return: Index directory of the given level.
+        """
 
 
 if __name__ == '__main__':

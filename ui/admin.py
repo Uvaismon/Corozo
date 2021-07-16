@@ -2,6 +2,7 @@ from tkinter import *
 from tkcalendar import *
 from account_manager.user_account_handler import UserAccountFileHandler
 import sys
+from account_manager import *
 
 sys.path.append('/...')
 
@@ -94,7 +95,10 @@ class Admin:
             account_holder_name = name_entry.get()
             account_type = items.get()
             password = pass_entry.get()
-            UserAccountFileHandler.create_account(account_holder_name, account_type, password)
+            customer_account_handler.create_account(
+                account_holder_name=account_holder_name,
+                account_type=account_type,
+                password=password)
             root.destroy()
 
         root = Tk()

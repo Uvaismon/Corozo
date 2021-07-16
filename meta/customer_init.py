@@ -6,7 +6,7 @@ from constants import *
 sys.path.append('/...')
 
 
-customer_l1_index = os.path.join(CUSTOMER_INDEX_META_DIRECTORY, '1')
+customer_l1_index = os.path.join(CUSTOMER_INDEX_DIRECTORY, '1')
 customer_l1_index_file = os.path.join(customer_l1_index, '1.txt')
 
 if __name__ == '__main__':
