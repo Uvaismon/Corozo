@@ -1,8 +1,8 @@
 from tkinter import *
 from tkcalendar import *
-from account_manager.user_account_handler import UserAccountFileHandler
 import sys
 from account_manager import *
+from constants import *
 
 sys.path.append('/...')
 
@@ -95,6 +95,7 @@ class Admin:
             account_holder_name = name_entry.get()
             account_type = items.get()
             password = pass_entry.get()
+            password = password + ' ' * (PASSWORD_SIZE - len(password))
             customer_account_handler.create_account(
                 account_holder_name=account_holder_name,
                 account_type=account_type,

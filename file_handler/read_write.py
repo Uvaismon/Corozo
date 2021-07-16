@@ -1,6 +1,3 @@
-from typing import Union
-from constants import *
-from meta import index_data
 import os
 
 FIELD_SEPARATOR = '|'
@@ -17,7 +14,7 @@ class ReadWrite:
         file_name -> the name of the file to which the function should write.
         data -> data to be written to the file.
         dir_path -> directory path where the file is located.
-        Returns byte offset of the record written to the file.
+        Returns byte pointer of the record written to the file.
         """
         file = None
         try:
@@ -37,7 +34,7 @@ class ReadWrite:
         This function performs all the operations of reading data from the file.
         It takes 3 arguments of which 1 is a default argument.
         file_name -> Name of the file to be read from.
-        offset -> byte location from which the function should read data. If this is not passed, the function reads
+        pointer -> byte location from which the function should read data. If this is not passed, the function reads
             from the beginning.
         number_of_records -> number of records to be read. If this argument is not passed, the function reads till the
             end of the file.
@@ -85,7 +82,7 @@ class ReadWrite:
         :param dir_path: directory at which the file exists.
         :param file_name: Name of the file to insert data.
         :param data: record fields are list.
-        :return: byte offset of the beginning of the record.
+        :return: byte pointer of the beginning of the record.
         """
         data_string = ReadWrite.pack(data)
         return ReadWrite.file_writer(file_name, dir_path, data_string)

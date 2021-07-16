@@ -1,7 +1,6 @@
 import json
 import sys
 from typing import Union
-
 from meta import *
 from constants import *
 
@@ -93,11 +92,23 @@ class UserDataIndex:
         Increases the indexing level of customer data
         :return: None
         """
+        from file_handler.indexer import Indexer
+
+        customer_indexer = Indexer('customer')
         meta_data = self.__get_meta()
         new_level = int(meta_data['number_of_levels']) + 1
+        old_level = new_level - 1
+        new_level_dir = os.path.join(self.index_dir, str(new_level))
         meta_data[new_level] = INDEX_LEVEL_INIT
         meta_data['number_of_levels'] = new_level
         self.__write_meta(meta_data)
+        if not os.path.isdir(new_level_dir):
+            os.makedirs(new_level_dir, exist_ok=True)
+        key1 = customer_indexer.get_starting_key('1.txt', old_level)
+        key2 = customer_indexer.get_starting_key('2.txt', old_level)
+        logging.debug(key1)
+        customer_indexer.insert_index(new_level, key1, '1.txt')
+        customer_indexer.insert_index(new_level, key2, '2.txt')
 
     def get_current_file(self, level) -> Union[str, int]:
         """
@@ -119,16 +130,11 @@ class UserDataIndex:
         if not self.__level_exists(level):
             return -1
         meta_data = self.__get_meta()
-        meta_data[lvl]['current_file_number'] = str(int(meta_data[lvl]['current_file_number']) + 1)
+        new_file = int(meta_data[lvl]['current_file_number']) + 1
+        meta_data[lvl]['current_file_number'] = str(new_file)
         self.__write_meta(meta_data)
+        self.reset_free_block_size(level)
         return 0
-
-    def level_dir(self, level) -> str:
-        """
-        Returns the directory path of the given level of index
-        :param level: Level of index
-        :return: Index directory of the given level.
-        """
 
 
 if __name__ == '__main__':

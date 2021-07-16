@@ -1,7 +1,7 @@
 import datetime
 
-from meta import *
 from file_handler import *
+from meta import *
 from constants import *
 
 import sys
@@ -65,7 +65,7 @@ class UserAccountFileHandler:
                                  self.data_dir,
                                  self.__get_data_list(data_list)
                                  )
-        self.indexer.insert_l1_index(str(account_number), str(index))
+        self.indexer.insert_index(1, str(account_number), str(index))
 
         self.universal_data.update_next_account_number()
         self.universal_data.decrement_free_block_size()
