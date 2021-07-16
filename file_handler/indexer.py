@@ -14,6 +14,10 @@ class Indexer:
             self.user_meta_obj = customer_index_meta
             self.dir_path = CUSTOMER_INDEX_DIRECTORY
 
+        if user == 'admin':
+            self.user_meta_obj = admin_index_meta
+            self.dir_path = ADMIN_INDEX_DIRECTORY
+
     def __get_level_path(self, level) -> str:
         """
         :param level: Index level

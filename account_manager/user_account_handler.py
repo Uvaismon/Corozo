@@ -17,12 +17,17 @@ class UserAccountFileHandler:
             self.universal_data = universal_customer_data
             self.data_dir = CUSTOMER_DATA_DIRECTORY
             self.indexer = customer_indexer
+        if user == 'admin':
+            self.universal_data = universal_admin_data
+            self.data_dir = ADMIN_DATA_DIRECTORY
+            self.indexer = admin_indexer
 
     def __get_data_list(self, data) -> list:
         """
         :param: Dictionary of data to be stored
         :return: List of user data to be stored in file
         """
+        data_list = []
         creation_date = str(datetime.datetime.now())
         balance = '0' * MAX_DIGITS
         if self.user == 'customer':
@@ -33,6 +38,14 @@ class UserAccountFileHandler:
                 data['account_type'],
                 creation_date,
                 balance
+            ]
+
+        if self.user == 'admin':
+            data_list = [
+                self.universal_data.get_next_account_number(),
+                data['password'],
+                data['account_holder_name'],
+                creation_date
             ]
         return data_list
 
