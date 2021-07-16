@@ -1,5 +1,6 @@
 from typing import Union
 from constants import *
+from meta import index_data
 import os
 
 FIELD_SEPARATOR = '|'

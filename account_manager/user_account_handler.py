@@ -2,6 +2,7 @@ import datetime
 
 from meta import *
 from file_handler import *
+from constants import *
 
 import sys
 
@@ -20,10 +21,13 @@ class UserAccountFileHandler:
         :return: None
         """
 
-        account_number = UniversalData.get_next_account_number()
+        account_number = universal_customer_data.get_next_account_number()
         creation_date = str(datetime.datetime.now())
-        file_name = UniversalData.get_current_customer_account_file()
-        balance = '0'
+        balance = '0' * MAX_DIGITS
+        if universal_customer_data.get_free_block_size() < 1:
+            universal_customer_data.update_current_account_file()
+            universal_customer_data.reset_block_size()
+        file_name = universal_customer_data.get_current_account_file()
 
         index = ReadWrite.insert(file_name,
                                  [account_number,
@@ -33,7 +37,10 @@ class UserAccountFileHandler:
                                   balance,
                                   password]
                                  )
-        UniversalData.update_next_account_number()
+        print(index)
+
+        universal_customer_data.update_next_account_number()
+        universal_customer_data.decrement_free_block_size()
 
     @staticmethod
     def delete_account(account_number: int) -> None:
