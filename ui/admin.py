@@ -95,6 +95,11 @@ class Admin:
             account_holder_name = name_entry.get()
             account_type = items.get()
             password = pass_entry.get()
+            if not UserAccountFileHandler.pass_strength(password):
+                # Display Password isn't strong enough message.
+                # After displaying the error message, it should again render Frame ID: 012
+                pass
+
             password = password + ' ' * (PASSWORD_SIZE - len(password))
             customer_account_handler.create_account(
                 account_holder_name=account_holder_name,
