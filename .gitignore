@@ -155,3 +155,4 @@ fabric.properties
 app_data/
 */data*.txt
 */log.txt
+log.txt
