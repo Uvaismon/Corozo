@@ -110,6 +110,12 @@ class UserDataIndex:
         customer_indexer.insert_index(new_level, key1, '1.txt')
         customer_indexer.insert_index(new_level, key2, '2.txt')
 
+    def get_highest_level(self) -> int:
+        """
+        :return: Highest level of indexing.
+        """
+        return self.__get_meta()['number_of_levels']
+
     def get_current_file(self, level) -> Union[str, int]:
         """
         Returns the current writing file at a given level, -1 if the level doesn't exists

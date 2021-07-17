@@ -47,11 +47,12 @@ class ReadWrite:
             file = open(file_path)
             file.seek(offset)
             if not number_or_records:
-                return file.readlines()
+                lines = file.readlines()
+                return list(map(ReadWrite.unpack, lines))
             lines = []
             for line in range(number_or_records):
                 lines.append(file.readline())
-            return lines
+            return list(map(ReadWrite.unpack, lines))
 
         except FileNotFoundError:
             return []
@@ -69,10 +70,11 @@ class ReadWrite:
         return FIELD_SEPARATOR.join(data_list)
 
     @staticmethod
-    def unpack(data_string) -> list:
+    def unpack(data_string: str) -> list:
         """
         This function can take in a string of fields and return a list of individual fields after unpacking it.
         """
+        data_string = data_string.replace(RECORD_SEPARATOR, '')
         return data_string.split(FIELD_SEPARATOR)
 
     @staticmethod

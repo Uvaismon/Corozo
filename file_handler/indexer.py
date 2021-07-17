@@ -1,5 +1,6 @@
 from meta import *
 from file_handler.read_write import ReadWrite
+from constants import *
 
 
 class Indexer:
@@ -58,7 +59,34 @@ class Indexer:
             self.user_meta_obj.increase_level()
         elif new_file:
             self.get_starting_key(file_name, level)
-            self.insert_index(level+1, key, file_name)
+            self.insert_index(level + 1, key, file_name)
+
+    def fetch_index(self, key: int, level: int = None, file_name: str = '1.txt') -> list:
+        """
+        Fetch the record location of the given key
+        :param key: key of the record to be searched
+        :param level: indexing level
+        :param file_name: index file name
+        :return: record location as a list as [file_name, offset]. Return empty list if the key doesn't exists.
+        """
+        if not level:
+            level = self.user_meta_obj.get_highest_level()
+        logging.debug(f'{key} {level} {file_name}')
+        index_loc = os.path.join(self.dir_path, str(level))
+        records = ReadWrite.file_reader(file_name, index_loc)
+        record_number = -1
+        low_key = int(records[0][0])
+        for record in records:
+            if int(record[0]) <= key:
+                low_key = int(record[0])
+                record_number += 1
+            else:
+                break
+        if len(records[record_number]) == 2:
+            return self.fetch_index(key, level - 1, records[record_number][1])
+        if low_key != key:
+            return []
+        return [records[record_number][1], records[record_number][2]]
 
     def get_starting_key(self, file_name, level) -> str:
         """
@@ -77,3 +105,4 @@ if __name__ == '__main__':
     """
     Debugging area
     """
+    print(Indexer('customer').fetch_index(1))
