@@ -100,7 +100,7 @@ class UserAccountFileHandler:
     def pass_strength(password):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
 
-        expression = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{4,10}$"
+        expression = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{4,10}$"
         cond = re.compile(expression)
 
         strength = re.search(cond, password)
