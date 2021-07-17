@@ -71,7 +71,6 @@ class Indexer:
         """
         if not level:
             level = self.user_meta_obj.get_highest_level()
-        logging.debug(f'{key} {level} {file_name}')
         index_loc = os.path.join(self.dir_path, str(level))
         records = ReadWrite.file_reader(file_name, index_loc)
         record_number = -1
@@ -86,7 +85,7 @@ class Indexer:
             return self.fetch_index(key, level - 1, records[record_number][1])
         if low_key != key:
             return []
-        return [records[record_number][1], records[record_number][2]]
+        return [records[record_number][1], int(records[record_number][2])]
 
     def get_starting_key(self, file_name, level) -> str:
         """
@@ -106,3 +105,4 @@ if __name__ == '__main__':
     Debugging area
     """
     k = Indexer('customer').fetch_index(1)
+    print(k)
