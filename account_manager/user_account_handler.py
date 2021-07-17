@@ -49,6 +49,31 @@ class UserAccountFileHandler:
             ]
         return data_list
 
+    def __get_data_dict(self, data_list: list) -> dict:
+        """
+        :param data_list: Data as a list
+        :return: return user data as dictionary.
+        """
+        if self.user == 'customer':
+            return {
+                'account_number': data_list[0],
+                'password': data_list[1],
+                'account_holder_name': data_list[2],
+                'account_type': data_list[3],
+                'creation_date': data_list[4],
+                'balance': data_list[5]
+            }
+
+    def __fetch_record(self, file_name: str, offset: int) -> dict:
+        """
+        :param file_name: Name of the file to fetch record from
+        :param offset: file offset where the record in present
+        :return: dictionary containing user data.
+        """
+        data_list = ReadWrite.file_reader(
+            file_name=file_name, dir_path=self.data_dir, offset=offset, number_or_records=1)
+        return self.__get_data_dict(data_list)
+
     def create_account(self, **data_list) -> None:
         """
         This method handles the account creation process.
@@ -85,7 +110,6 @@ class UserAccountFileHandler:
         :param password: password of the customer
         :return: 1 if credentials are matched, 0 otherwise.
         """
-        pass
 
     def update_balance(self, account_number: int, update_amount) -> int:
         """

@@ -105,4 +105,4 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-    print(Indexer('customer').fetch_index(1))
+    k = Indexer('customer').fetch_index(1)
