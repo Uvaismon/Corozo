@@ -1,6 +1,5 @@
 import datetime
 import re
-
 from file_handler import *
 from meta import *
 from constants import *
@@ -101,16 +100,12 @@ class UserAccountFileHandler:
     def pass_strength(password):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
 
-        if ( len(password) >= 10):
-            expression = " ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$ "
-            cond = re.compile(expression)
+        expression = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{4,10}$"
+        cond = re.compile(expression)
 
-            strength = re.search(cond, password)
-
-            if strength:
-                return 1
-            else:
-                return 0
+        strength = re.search(cond, password)
+        if strength:
+            return 1
         else:
             return 0
 
@@ -119,4 +114,3 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-   
