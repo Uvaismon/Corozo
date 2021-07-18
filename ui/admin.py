@@ -95,10 +95,14 @@ class Admin:
             account_holder_name = name_entry.get()
             account_type = items.get()
             password = pass_entry.get()
+            if not account_holder_name or not account_type or not password:
+                # Display "Please fill all fields" message
+                return
+
             if not UserAccountFileHandler.pass_strength(password):
                 # Display Password isn't strong enough message.
-                # After displaying the error message, it should again render Frame ID: 012
-                pass
+                # After displaying the error message, it should again render account creation window
+                return
 
             password = password + ' ' * (PASSWORD_SIZE - len(password))
             customer_account_handler.create_account(
@@ -271,7 +275,8 @@ if __name__ == '__main__':
 
     # Admin.admin()
     # Admin.admin_control_panel()
-    Admin.new_account()
+    while True:
+        Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))

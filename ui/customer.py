@@ -83,7 +83,8 @@ class Customer:
             pass
 
         def settings():
-            pass
+            root.destroy()
+            Customer.settings(acct_number)
 
         root = Tk()
         root.title('Home')
@@ -126,20 +127,22 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def settings():
+    def settings(account_number: int):
         """
         Frame ID: 003
         This method renders the account settings window.
         It provides 2 choices to the users.
         The method calls password changing window if users clicks change password button and account closing window
             if user clicks close account button.
+        :param account_number: account number of the user.
         """
 
         def change_password_window():
             pass
 
         def close_account_window():
-            pass
+            root.destroy()
+            Customer.close_account(account_number)
 
         root = Tk()
         root.title('Settings')
@@ -233,7 +236,7 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def close_account(acct_number: int, balance: float):
+    def close_account(acct_number: int):
         """
         Frame ID: 006
         This method renders the close account window. It takes in the following arguments.
@@ -241,21 +244,30 @@ class Customer:
         account balance -> float
         This method calls close account manager if user chooses to close account:
         """
+        balance = customer_account_handler.get_balance(acct_number)
 
         def close_account():
-            pass
+            entered_password = e3.get()
+            if customer_account_handler.authenticate(acct_number, entered_password):
+                # Display account closed successfully message.
+                root.destroy()
+                customer_account_handler.delete_account(acct_number)
+                Customer.log_in()
+            else:
+                # Display authentication failed message
+                pass
 
         root = Tk()
         root.title('Close account')
 
-        account_number = Label(root, text="Enter Account Number")
+        account_number = Label(root, text="Account Number")
 
         e1 = Label(root, text=acct_number, width=30)
 
         account_balance = Label(root, text="Account Balance is : ")
         e2 = Label(root, text=balance, width=30)
 
-        Password = Label(root, text="Enter Password")
+        password = Label(root, text="Enter Password")
         e3 = Entry(root, width=30)
 
         account_number.grid(row=1, column=0)
@@ -264,7 +276,7 @@ class Customer:
         account_balance.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        Password.grid(row=3, column=0)
+        password.grid(row=3, column=0)
         e3.grid(row=3, column=1, padx=10, pady=10)
 
         close_account = Button(root, text="Close", command=close_account)
