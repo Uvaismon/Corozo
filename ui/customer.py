@@ -2,7 +2,7 @@ import datetime
 import tkinter as tk
 from tkinter import *
 from tkcalendar import *
-from account_manager import customer_account_handler
+from account_manager import customer_account_handler, UserAccountFileHandler
 from ui.admin import Admin
 
 
@@ -138,7 +138,8 @@ class Customer:
         """
 
         def change_password_window():
-            pass
+            root.destroy()
+            Customer.change_password(account_number)
 
         def close_account_window():
             root.destroy()
@@ -195,15 +196,32 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def change_password():
+    def change_password(account_number: int):
         """
         Frame ID: 005
         This method renders window that lets users to change password.
         This method calls password changer when user clicks submit button to change password.
+        :param account_number: Customer account number to change password.
         """
 
         def change_password():
-            pass
+            old_password = e.get()
+            new_password = e2.get()
+            re_entered_password = e3.get()
+            strength = UserAccountFileHandler.pass_strength(new_password)
+            authenticated = customer_account_handler.authenticate(account_number, old_password)
+
+            if not authenticated:
+                # Display authentication failed message
+                return
+            if not new_password == re_entered_password:
+                # Display password does not match errors.
+                return
+            if not strength:
+                # Display new password not strong enough error.
+                return
+            root.destroy()
+            customer_account_handler.change_password(account_number, new_password)
 
         root = Tk()
         root.title('Change password')

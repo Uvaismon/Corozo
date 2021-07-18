@@ -157,6 +157,19 @@ class UserAccountFileHandler:
         data_dict = self.__fetch_record(file_name, offset)
         return data_dict['balance']
 
+    def change_password(self, account_number, new_password):
+        """
+        Updates the user account password
+        :param account_number: Account number of the user
+        :param new_password: New password to be updated in place of the old password
+        :return: None
+        """
+        file_name, offset = self.indexer.fetch_index(account_number)
+        data_dict = self.__fetch_record(file_name, offset)
+        data_dict['password'] = new_password
+        new_rec = ReadWrite.pack(self.__get_data_list(data_dict))
+        ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
+
     @staticmethod
     def pass_strength(password):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
@@ -180,4 +193,5 @@ if __name__ == '__main__':
     """
     # print(UserAccountFileHandler('customer').authenticate(9, '9510'))
     # UserAccountFileHandler('customer').delete_account(25)
-    UserAccountFileHandler('customer').update_balance(2, 100)
+    # UserAccountFileHandler('customer').update_balance(2, 100)
+    # UserAccountFileHandler('customer').change_password(3, 'SicMu2@')
