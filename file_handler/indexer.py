@@ -95,7 +95,7 @@ class Indexer:
         :return: first key of the file
         """
         dir_path = self.__get_level_path(level)
-        data = ReadWrite.file_reader(file_name=file_name, dir_path=dir_path, number_or_records=1)[0]
+        data = ReadWrite.file_reader(file_name=file_name, dir_path=dir_path, number_or_records=1)[0][0]
         data_list = ReadWrite.unpack(data)
         return data_list[0]
 

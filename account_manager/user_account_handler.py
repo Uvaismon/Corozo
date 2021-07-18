@@ -1,6 +1,7 @@
 import datetime
 import re
 from file_handler import *
+from file_handler.read_write import DELETION_INDICATOR
 from meta import *
 from constants import *
 
@@ -28,24 +29,31 @@ class UserAccountFileHandler:
         :return: List of user data to be stored in file
         """
         data_list = []
-        creation_date = str(datetime.datetime.now())
-        balance = '0' * MAX_DIGITS
+        if not data.get('creation_date', False):
+            data['creation_date'] = str(datetime.datetime.now())
+        if data.get('account_number', -1) == -1:
+            data['account_number'] = self.universal_data.get_next_account_number()
+        if data.get('balance', -1) == -1:
+            data['balance'] = 0
+        data['password'] += ' ' * (PASSWORD_SIZE - len(data['password']))
+        data['balance'] = str(data['balance'])
+        data['balance'] = ('0' * (MAX_DIGITS - len(data['balance']))) + data['balance']
         if self.user == 'customer':
             data_list = [
-                self.universal_data.get_next_account_number(),
+                str(data['account_number']),
                 data['password'],
                 data['account_holder_name'],
                 data['account_type'],
-                creation_date,
-                balance
+                data['creation_date'],
+                data['balance']
             ]
 
         if self.user == 'admin':
             data_list = [
-                self.universal_data.get_next_account_number(),
+                str(data['account_number']),
                 data['password'],
                 data['account_holder_name'],
-                creation_date
+                data['creation_date']
             ]
         return data_list
 
@@ -56,7 +64,7 @@ class UserAccountFileHandler:
         """
         if self.user == 'customer':
             return {
-                'account_number': data_list[0],
+                'account_number': int(data_list[0]),
                 'password': data_list[1].strip(),
                 'account_holder_name': data_list[2],
                 'account_type': data_list[3],
@@ -68,10 +76,12 @@ class UserAccountFileHandler:
         """
         :param file_name: Name of the file to fetch record from
         :param offset: file offset where the record in present
-        :return: dictionary containing user data.
+        :return: dictionary containing user data. Empty dictionary if user doesn't exists.
         """
         data_list = ReadWrite.file_reader(
             file_name=file_name, dir_path=self.data_dir, offset=offset, number_or_records=1)
+        if not data_list:
+            return {}
         return self.__get_data_dict(data_list[0])
 
     def create_account(self, **data_list) -> None:
@@ -101,7 +111,12 @@ class UserAccountFileHandler:
         :param account_number: Account number of the account to be deleted.
         :return: None
         """
-        pass
+        index = self.indexer.fetch_index(account_number)
+        if not index:
+            return
+        file_name = index[0]
+        offset = index[1]
+        ReadWrite.file_writer(file_name, self.data_dir, DELETION_INDICATOR, offset)
 
     def authenticate(self, account_number: int, password: str) -> dict:
         """
@@ -114,28 +129,45 @@ class UserAccountFileHandler:
         if not index:
             return {}
         record = self.__fetch_record(index[0], index[1])
+        if not record:
+            return {}
         if record['password'] == password:
-            del(record['password'])
+            del (record['password'])
             return record
         return {}
 
-    def update_balance(self, account_number: int, update_amount) -> int:
+    def update_balance(self, account_number: int, update_amount):
         """
         Updates account balance of the user.
         :param account_number: account number of the user
         :param update_amount: amount to be deposited(if positive) or deducted(if negative) from the account.
-        :return: 1 if successfully updated, 0 otherwise.
         """
-        pass
+        file_name, offset = self.indexer.fetch_index(account_number)
+        data_dict = self.__fetch_record(file_name, offset)
+        data_dict['balance'] = str(data_dict['balance'] + update_amount)
+        new_rec = ReadWrite.pack(self.__get_data_list(data_dict))
+        ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
+
+    def get_balance(self, account_number) -> int:
+        """
+        :param account_number: Account number of the user
+        :return: Balance of the given account.
+        """
+        file_name, offset = self.indexer.fetch_index(account_number)
+        data_dict = self.__fetch_record(file_name, offset)
+        return data_dict['balance']
 
     @staticmethod
     def pass_strength(password):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
 
-        expression = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{4,10}$"
-        cond = re.compile(expression)
+        al_s = re.search(r'[a-z]', password)
+        al_b = re.search(r'[A-Z]', password)
+        num = re.search(r'[0-9]', password)
+        spec = re.search(r'[^a-zA-Z0-9]', password)
 
-        strength = re.search(cond, password)
+        strength = al_s and al_b and num and spec and 6 <= len(password) <= 10
+
         if strength:
             return 1
         else:
@@ -146,4 +178,6 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-    print(UserAccountFileHandler('customer').authenticate(9, '9510'))
+    # print(UserAccountFileHandler('customer').authenticate(9, '9510'))
+    # UserAccountFileHandler('customer').delete_account(25)
+    UserAccountFileHandler('customer').update_balance(2, 100)

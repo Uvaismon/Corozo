@@ -1,29 +1,43 @@
 import os
+from constants import *
 
 FIELD_SEPARATOR = '|'
 RECORD_SEPARATOR = '\n'
+DELETION_INDICATOR = '#'
 
 
 class ReadWrite:
 
     @staticmethod
-    def file_writer(file_name: str, dir_path: str, data: str) -> int:
+    def file_writer(file_name: str, dir_path: str, data: str, offset: int = None) -> int:
         """
         This function performs all operations of writing data to any file.
         It takes 2 arguments of which 1 is a default argument.
         file_name -> the name of the file to which the function should write.
         data -> data to be written to the file.
         dir_path -> directory path where the file is located.
+        offset -> offset from where the data need to be written.
         Returns byte pointer of the record written to the file.
         """
         file = None
+        sep_req = True
+        file_path = os.path.join(dir_path, file_name)
         try:
-            file_path = os.path.join(dir_path, file_name)
-            file = open(file_path, 'a')
+            file = open(file_path, 'r+')
+            if offset is None:
+                file.seek(0, 2)
+            else:
+                file.seek(offset)
+                sep_req = False
             offset = file.tell()
             file.write(data)
-            file.write(RECORD_SEPARATOR)
+            if sep_req:
+                file.write(RECORD_SEPARATOR)
             return offset
+
+        except FileNotFoundError:
+            file = open(file_path, 'w')
+            return ReadWrite.file_writer(file_name, dir_path, data, offset)
 
         finally:
             file.close()
@@ -46,12 +60,19 @@ class ReadWrite:
         try:
             file = open(file_path)
             file.seek(offset)
-            if not number_or_records:
-                lines = file.readlines()
-                return list(map(ReadWrite.unpack, lines))
             lines = []
-            for line in range(number_or_records):
-                lines.append(file.readline())
+            if not number_or_records:
+                data_lines = file.readlines()
+                for line in data_lines:
+                    if line[0] == DELETION_INDICATOR:
+                        continue
+                    lines.append(line)
+                return list(map(ReadWrite.unpack, lines))
+            for _ in range(number_or_records):
+                line = file.readline()
+                if line[0] == DELETION_INDICATOR:
+                    continue
+                lines.append(line)
             return list(map(ReadWrite.unpack, lines))
 
         except FileNotFoundError:
