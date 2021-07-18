@@ -2,6 +2,7 @@ import datetime
 import tkinter as tk
 from tkinter import *
 from tkcalendar import *
+from account_manager import customer_account_handler
 
 
 class Customer:
@@ -17,7 +18,18 @@ class Customer:
         """
 
         def log_in():
-            pass
+            entered_password = e2.get()
+            entered_account = int(e.get())
+            res = customer_account_handler.authenticate(entered_account, entered_password)
+            if res:
+                root.destroy()
+                Customer.home(res['account_number'],
+                              res['account_holder_name'],
+                              res['account_type'],
+                              res['balance'])
+            else:
+                # Display authentication failed message.
+                pass
 
         def admin():
             pass
@@ -28,7 +40,6 @@ class Customer:
         root.minsize(400, 200)
         root.maxsize(400, 200)
         root.title("Login")
-        # welcome = Label(root, text="Welcome to Avocado Crypt", font=('Times New Roman', 24), fg='Red', width=80)
 
         account_number = Label(root, text="Enter Account Number")
 
@@ -79,30 +90,30 @@ class Customer:
         root.maxsize(400, 400)
         root.title("Home")
 
-        account_number = Label(root, text="Enter Account Number")
+        account_number = Label(root, text="Account Number")
 
         e1 = Label(root, text=acct_number, width=30)
 
-        account_holder_name = Label(root, text="Enter Name: ")
+        account_holder_name = Label(root, text="Account holder name: ")
         e2 = Label(root, text=acct_holder_name, width=30)
 
-        account_number.grid(row=1, column=0)
+        account_number.grid(row=1, column=0, sticky='W', padx=10)
         e1.grid(row=1, column=1, padx=10, pady=10)
 
-        account_holder_name.grid(row=2, column=0)
+        account_holder_name.grid(row=2, column=0, sticky='W', padx=10)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        account_type = Label(root, text="Choose account type")
+        account_type = Label(root, text="Account type")
 
         e3 = Label(root, text=acct_type, width=30)
 
         account_balance = Label(root, text="The balance is: ")
         e4 = Label(root, text=balance, width=30)
 
-        account_type.grid(row=3, column=0)
+        account_type.grid(row=3, column=0, sticky='W', padx=10)
         e3.grid(row=3, column=1, padx=10, pady=10)
 
-        account_balance.grid(row=4, column=0)
+        account_balance.grid(row=4, column=0, sticky='W', padx=10)
         e4.grid(row=4, column=1, padx=10, pady=10)
 
         transact = Button(root, text="Transact", command=transact)
@@ -389,13 +400,13 @@ class Customer:
 if __name__ == '__main__':
     """
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
-    
+    """
 
     Customer.log_in()
-    Customer.home(1234, "zabi", "Savings", 5000)
-    Customer.settings()
-    Customer.transact()
-    Customer.change_password()
-    Customer.close_account(1234, 2000)
-    Customer.send_money()"""
-    Customer.search_transactions()
+    # Customer.home(1234, "zabi", "Savings", 5000)
+    # Customer.settings()
+    # Customer.transact()
+    # Customer.change_password()
+    # Customer.close_account(1234, 2000)
+    # Customer.send_money()
+    # Customer.search_transactions()

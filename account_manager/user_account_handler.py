@@ -61,7 +61,7 @@ class UserAccountFileHandler:
                 'account_holder_name': data_list[2],
                 'account_type': data_list[3],
                 'creation_date': data_list[4],
-                'balance': data_list[5]
+                'balance': int(data_list[5].strip())
             }
 
     def __fetch_record(self, file_name: str, offset: int) -> dict:
@@ -103,18 +103,21 @@ class UserAccountFileHandler:
         """
         pass
 
-    def authenticate(self, account_number: int, password: str) -> bool:
+    def authenticate(self, account_number: int, password: str) -> dict:
         """
         This method is used to authenticate the customers.
         :param account_number: account number of the customer
         :param password: password of the customer
-        :return: True if credentials are matched, False otherwise.
+        :return: Account details as a dict if authenticated successfully, empty dict otherwise.
         """
         index = self.indexer.fetch_index(account_number)
         if not index:
-            return False
+            return {}
         record = self.__fetch_record(index[0], index[1])
-        return record['password'] == password
+        if record['password'] == password:
+            del(record['password'])
+            return record
+        return {}
 
     def update_balance(self, account_number: int, update_amount) -> int:
         """
@@ -143,4 +146,4 @@ if __name__ == '__main__':
     """
     Debugging area
     """
-    print(UserAccountFileHandler('customer').authenticate(-1, 'awer'))
+    print(UserAccountFileHandler('customer').authenticate(9, '9510'))
