@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import *
 from tkcalendar import *
 from account_manager import customer_account_handler
+from ui.admin import Admin
 
 
 class Customer:
@@ -32,7 +33,8 @@ class Customer:
                 pass
 
         def admin():
-            pass
+            root.destroy()
+            Admin.admin()
 
         root = Tk()
         root.title('Log In')
@@ -58,7 +60,7 @@ class Customer:
         my_button.grid(row=3, column=1)
         # welcome.grid(row=0, column=0)
 
-        admin_button = Button(root, text="ADMIN", command=admin())
+        admin_button = Button(root, text="ADMIN", command=admin)
         admin_button.grid(row=4, column=3)
 
         root.mainloop()
