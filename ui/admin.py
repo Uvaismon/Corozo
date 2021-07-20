@@ -22,7 +22,7 @@ class Admin:
             auth = admin_account_handler.authenticate(entered_id, entered_password)
             if auth:
                 root.destroy()
-                Admin.admin_control_panel()
+                Admin.admin_control_panel(auth['account_number'])
 
             else:
                 # Display authentication failed message.
@@ -52,13 +52,14 @@ class Admin:
         root.mainloop()
 
     @staticmethod
-    def admin_control_panel():
+    def admin_control_panel(admin_id: int):
         """
         Frame ID: 011
         This method renders window that lets admins perform various operations as mentioned in the docs.
         This method calls account creation window if the admin clicks on create account button, search transaction
             window if the admin clicks on search transaction button, money adding window if the admin clicks on
             add money button and password changer if the user clicks on change password button.
+        :param admin_id: Id of the logged in admin.
         """
 
         def create_new_account_window():
@@ -72,7 +73,7 @@ class Admin:
             pass
 
         def change_password_window():
-            pass
+            Admin.change_password(admin_id)
 
         root = Tk()
         root.title('Admin Control Panel')
@@ -275,6 +276,64 @@ class Admin:
         else:
             add_withdraw_btn.config(text='Withdraw')
             add_withdraw_btn.config(command=withdraw)
+        root.mainloop()
+
+    @staticmethod
+    def change_password(admin_id: int):
+        """
+        Frame ID: 005
+        This method renders window that lets users to change password.
+        This method calls password changer when user clicks submit button to change password.
+        :param admin_id: ID of the logged in admin.
+        """
+
+        def change_password():
+            old_password = e.get()
+            new_password = e2.get()
+            re_entered_password = e3.get()
+            strength = UserAccountFileHandler.pass_strength(new_password)
+            authenticated = admin_account_handler.authenticate(admin_id, old_password)
+
+            if not authenticated:
+                # Display authentication failed message
+                return
+            if not new_password == re_entered_password:
+                # Display password does not match errors.
+                return
+            if not strength:
+                # Display new password not strong enough error.
+                return
+            root.destroy()
+            admin_account_handler.change_password(admin_id, new_password)
+
+        root = Tk()
+        root.title('Change password')
+        root.geometry("400x400")
+        root.minsize(400, 200)
+        root.maxsize(400, 200)
+
+        enter_old_passcode = Label(root, text="Enter Old Passcode")
+
+        e = Entry(root, width=30)
+
+        enter_new_passcode = Label(root, text="Enter New Passcode: ")
+        e2 = Entry(root, width=30)
+
+        reenter_new_passcode = Label(root, text="Re-enter New Passcode")
+        e3 = Entry(root, width=30)
+
+        enter_old_passcode.grid(row=1, column=0)
+        e.grid(row=1, column=1, padx=10, pady=10)
+
+        enter_new_passcode.grid(row=2, column=0)
+        e2.grid(row=2, column=1, padx=10, pady=10)
+
+        reenter_new_passcode.grid(row=3, column=0)
+        e3.grid(row=3, column=1, padx=10, pady=10)
+
+        submit = Button(root, text="Submit", command=change_password)
+        submit.grid(row=4, column=0, padx=30, pady=15)
+
         root.mainloop()
 
 
