@@ -72,6 +72,14 @@ class UserAccountFileHandler:
                 'balance': int(data_list[5].strip())
             }
 
+        if self.user == 'admin':
+            return {
+                'account_number': int(data_list[0]),
+                'password': data_list[1].strip(),
+                'account_holder_name': data_list[2],
+                'creation_date': data_list[3]
+            }
+
     def __fetch_record(self, file_name: str, offset: int) -> dict:
         """
         :param file_name: Name of the file to fetch record from
@@ -84,11 +92,11 @@ class UserAccountFileHandler:
             return {}
         return self.__get_data_dict(data_list[0])
 
-    def create_account(self, **data_list) -> None:
+    def create_account(self, **data_dict) -> int:
         """
         This method handles the account creation process.
-        :param data_list: Dictionary of data related to the customer
-        :return: None
+        :param data_dict: Dictionary of data related to the customer
+        :return: Account number
         """
 
         account_number = self.universal_data.get_next_account_number()
@@ -98,12 +106,13 @@ class UserAccountFileHandler:
 
         index = ReadWrite.insert(file_name,
                                  self.data_dir,
-                                 self.__get_data_list(data_list)
+                                 self.__get_data_list(data_dict)
                                  )
         self.indexer.insert_index(1, str(account_number), str(index))
 
         self.universal_data.update_next_account_number()
         self.universal_data.decrement_free_block_size()
+        return account_number
 
     def delete_account(self, account_number: int) -> None:
         """

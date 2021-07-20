@@ -94,7 +94,13 @@ class UserDataIndex:
         """
         from file_handler.indexer import Indexer
 
-        customer_indexer = Indexer('customer')
+        if self.meta_file == CUSTOMER_INDEX_META_FILE:
+            user_indexer = Indexer('customer')
+        elif self.meta_file == ADMIN_INDEX_META_FILE:
+            user_indexer = Indexer('admin')
+        else:
+            raise ValueError
+
         meta_data = self.__get_meta()
         new_level = int(meta_data['number_of_levels']) + 1
         old_level = new_level - 1
@@ -104,11 +110,11 @@ class UserDataIndex:
         self.__write_meta(meta_data)
         if not os.path.isdir(new_level_dir):
             os.makedirs(new_level_dir, exist_ok=True)
-        key1 = customer_indexer.get_starting_key('1.txt', old_level)
-        key2 = customer_indexer.get_starting_key('2.txt', old_level)
+        key1 = user_indexer.get_starting_key('1.txt', old_level)
+        key2 = user_indexer.get_starting_key('2.txt', old_level)
         logging.debug(key1)
-        customer_indexer.insert_index(new_level, key1, '1.txt')
-        customer_indexer.insert_index(new_level, key2, '2.txt')
+        user_indexer.insert_index(new_level, key1, '1.txt')
+        user_indexer.insert_index(new_level, key2, '2.txt')
 
     def get_highest_level(self) -> int:
         """

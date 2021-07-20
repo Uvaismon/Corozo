@@ -14,10 +14,12 @@ class Indexer:
         if user == 'customer':
             self.user_meta_obj = customer_index_meta
             self.dir_path = CUSTOMER_INDEX_DIRECTORY
+            self.universal_data = universal_customer_data
 
         if user == 'admin':
             self.user_meta_obj = admin_index_meta
             self.dir_path = ADMIN_INDEX_DIRECTORY
+            self.universal_data = universal_admin_data
 
     def __get_level_path(self, level) -> str:
         """
@@ -41,7 +43,7 @@ class Indexer:
             new_file = True
         file_name = self.user_meta_obj.get_current_file(level)
         if level == 1:
-            data_file = universal_customer_data.get_current_account_file()
+            data_file = self.universal_data.get_current_account_file()
             data_list = [
                 key,
                 data_file,
