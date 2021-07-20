@@ -17,7 +17,16 @@ class Admin:
         """
 
         def log_in_admin():
-            pass
+            entered_id = int(admin_id_entry.get())
+            entered_password = admin_pass_entry.get()
+            auth = admin_account_handler.authenticate(entered_id, entered_password)
+            if auth:
+                root.destroy()
+                Admin.admin_control_panel()
+
+            else:
+                # Display authentication failed message.
+                pass
 
         root = Tk()
         root.title('Admin Login')
@@ -53,7 +62,8 @@ class Admin:
         """
 
         def create_new_account_window():
-            pass
+            root.destroy()
+            Admin.new_account()
 
         def search_transaction_window():
             pass
@@ -273,9 +283,9 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    # Admin.admin()
+    Admin.admin()
     # Admin.admin_control_panel()
-    Admin.new_account()
+    # Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))

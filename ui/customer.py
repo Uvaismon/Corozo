@@ -21,13 +21,13 @@ class Customer:
         def log_in():
             entered_password = e2.get()
             entered_account = int(e.get())
-            res = customer_account_handler.authenticate(entered_account, entered_password)
-            if res:
+            auth = customer_account_handler.authenticate(entered_account, entered_password)
+            if auth:
                 root.destroy()
-                Customer.home(res['account_number'],
-                              res['account_holder_name'],
-                              res['account_type'],
-                              res['balance'])
+                Customer.home(auth['account_number'],
+                              auth['account_holder_name'],
+                              auth['account_type'],
+                              auth['balance'])
             else:
                 # Display authentication failed message.
                 pass
