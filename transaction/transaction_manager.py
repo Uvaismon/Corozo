@@ -1,4 +1,5 @@
-from constants import
+from constants import *
+
 
 class TransactionManager:
     """
@@ -12,3 +13,4 @@ class TransactionManager:
         :param trans_data: dictionary of data containing transaction details
         :return: None
         """
+        pass
