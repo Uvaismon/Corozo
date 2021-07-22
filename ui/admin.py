@@ -73,6 +73,7 @@ class Admin:
             pass
 
         def change_password_window():
+            root.destroy()
             Admin.change_password(admin_id)
 
         root = Tk()
@@ -342,7 +343,7 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    Admin.admin()
+    # Admin.admin()
     # Admin.admin_control_panel()
     # Admin.new_account()
     # Admin.search_transaction_admin()
