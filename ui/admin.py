@@ -122,7 +122,7 @@ class Admin:
                 # After displaying the error message, it should again render account creation window
                 # print(password)
                 message = "Password isn't strong enough"
-                error_message(message)
+                Admin.error_message(message)
                 return
 
             password = password + ' ' * (PASSWORD_SIZE - len(password))
