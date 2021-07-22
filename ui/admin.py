@@ -354,7 +354,7 @@ if __name__ == '__main__':
 
     # Admin.admin()
     # Admin.admin_control_panel()
-     Admin.new_account()
+    Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))

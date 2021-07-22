@@ -156,3 +156,4 @@ app_data/
 */data*.txt
 */log.txt
 log.txt
+.idea/*
