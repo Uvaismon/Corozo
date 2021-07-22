@@ -3,11 +3,16 @@ from tkcalendar import *
 import sys
 from account_manager import *
 from constants import *
+from tkinter import messagebox
 
 sys.path.append('/...')
 
 
 class Admin:
+
+    @staticmethod
+    def error_message(message):
+        messagebox.showerror('Error', message)
 
     @staticmethod
     def admin():
@@ -102,6 +107,7 @@ class Admin:
         This method calls the account creation handler when the admin clicks on create account button.
         """
 
+
         def create_account():
             account_holder_name = name_entry.get()
             account_type = items.get()
@@ -113,6 +119,9 @@ class Admin:
             if not UserAccountFileHandler.pass_strength(password):
                 # Display Password isn't strong enough message.
                 # After displaying the error message, it should again render account creation window
+                # print(password)
+                message = "Password isn't strong enough"
+                error_message(message)
                 return
 
             password = password + ' ' * (PASSWORD_SIZE - len(password))
@@ -344,7 +353,7 @@ if __name__ == '__main__':
 
     Admin.admin()
     # Admin.admin_control_panel()
-    # Admin.new_account()
+     Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
