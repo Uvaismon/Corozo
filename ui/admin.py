@@ -122,7 +122,7 @@ class Admin:
                 # After displaying the error message, it should again render account creation window
                 # print(password)
                 message = "Password isn't strong enough"
-                Admin.error_message(message)
+                error_message(message)
                 return
 
             password = password + ' ' * (PASSWORD_SIZE - len(password))
@@ -354,7 +354,7 @@ if __name__ == '__main__':
 
     # Admin.admin()
     # Admin.admin_control_panel()
-    Admin.new_account()
+     Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
