@@ -98,6 +98,8 @@ class UserDataIndex:
             user_indexer = Indexer('customer')
         elif self.meta_file == ADMIN_INDEX_META_FILE:
             user_indexer = Indexer('admin')
+        elif self.meta_file == TRANSACTION_INDEX_META_FILE:
+            user_indexer = Indexer('transactor')
         else:
             raise ValueError
 

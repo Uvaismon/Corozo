@@ -1,11 +1,8 @@
 from tkinter import *
 from tkcalendar import *
-import sys
 from account_manager import *
 from constants import *
 from tkinter import messagebox
-
-sys.path.append('/...')
 
 
 class Admin:
@@ -107,7 +104,6 @@ class Admin:
         This method renders window that lets admins create new user account.
         This method calls the account creation handler when the admin clicks on create account button.
         """
-
 
         def create_account():
             account_holder_name = name_entry.get()

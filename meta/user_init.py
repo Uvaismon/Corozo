@@ -24,6 +24,12 @@ class UserMetaInit:
             self.meta_file = ADMIN_INDEX_META_FILE
             self.initialize()
 
+        if user == 'transactor':
+            self.l1_index = os.path.join(TRANSACTION_INDEX_DIRECTORY, '1')
+            self.l1_index_file = os.path.join(self.l1_index, '1.txt')
+            self.meta_file = TRANSACTION_INDEX_META_FILE
+            self.initialize()
+
     def initialize(self):
         """
         Customer index meta initialization
@@ -44,3 +50,4 @@ class UserMetaInit:
 if __name__ == '__main__':
     UserMetaInit('customer')
     UserMetaInit('admin')
+    UserMetaInit('transactor')

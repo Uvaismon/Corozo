@@ -1,9 +1,6 @@
 import json
 import os
 from constants import *
-import sys
-
-sys.path.append('/...')
 universal_meta_file_path = os.path.join(META_DIRECTORY, 'universal_data.json')
 
 
@@ -104,6 +101,11 @@ if __name__ == '__main__':
             'number_of_entries': '0'
         },
         'admin': {
+            'next_account_number': '1',
+            'current_account_file': '1',
+            'number_of_entries': '0'
+        },
+        'transactor': {
             'next_account_number': '1',
             'current_account_file': '1',
             'number_of_entries': '0'

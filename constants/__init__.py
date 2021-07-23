@@ -16,6 +16,10 @@ ADMIN_DATA_DIRECTORY = os.path.join(DATA_DIRECTORY, 'admin_data', 'data')
 ADMIN_INDEX_DIRECTORY = os.path.join(DATA_DIRECTORY, 'admin_data', 'index')
 ADMIN_INDEX_META_FILE = os.path.join(ADMIN_INDEX_DIRECTORY, 'meta.json')
 
+TRANSACTION_DATA_DIRECTORY = os.path.join(DATA_DIRECTORY, 'transaction_data', 'data')
+TRANSACTION_INDEX_DIRECTORY = os.path.join(DATA_DIRECTORY, 'transaction_data', 'index')
+TRANSACTION_INDEX_META_FILE = os.path.join(TRANSACTION_INDEX_DIRECTORY, 'meta.json')
+
 LOG_FILE = os.path.join(META_DIRECTORY, 'log.ini')
 logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
 

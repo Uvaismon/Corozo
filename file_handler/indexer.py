@@ -5,10 +5,11 @@ from constants import *
 
 class Indexer:
 
-    def __init__(self, user):
+    def __init__(self, user, dir_path: str = None):
         """
         Initializes the class according to the user.
         :param user: customer or admin
+        :param dir_path: Index directory path.
         :return: None
         """
         if user == 'customer':
@@ -20,6 +21,11 @@ class Indexer:
             self.user_meta_obj = admin_index_meta
             self.dir_path = ADMIN_INDEX_DIRECTORY
             self.universal_data = universal_admin_data
+
+        if user == 'transactor':
+            self.user_meta_obj = transaction_index_meta
+            self.dir_path = TRANSACTION_INDEX_DIRECTORY
+            self.universal_data = universal_transaction_data
 
     def __get_level_path(self, level) -> str:
         """
