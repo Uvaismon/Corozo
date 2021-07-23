@@ -12,6 +12,10 @@ class Admin:
         messagebox.showerror('Error', message)
 
     @staticmethod
+    def warning_message(message):
+        messagebox.showwarning('Warning', message)
+
+    @staticmethod
     def admin():
         """
         This method renders the window that lets admins to log into the system.
@@ -28,7 +32,7 @@ class Admin:
 
             else:
                 # Display authentication failed message.
-                message='Authenticatiion Failed'
+                message='Authenticatiion failed'
                 Admin.error_message(message)
 
         root = Tk()
@@ -112,6 +116,8 @@ class Admin:
             password = pass_entry.get()
             if not account_holder_name or not account_type or not password:
                 # Display "Please fill all fields" message
+                message='Please fill all fields'
+                Admin.warning_message(message)
                 return
 
             if not UserAccountFileHandler.pass_strength(password):
@@ -119,7 +125,7 @@ class Admin:
                 # After displaying the error message, it should again render account creation window
                 # print(password)
                 message = "Password isn't strong enough"
-                Admin.error_message(message)
+                Admin.warning_message(message)
                 return
 
             password = password + ' ' * (PASSWORD_SIZE - len(password))
@@ -303,12 +309,20 @@ class Admin:
 
             if not authenticated:
                 # Display authentication failed message
+                message='Authentication failed'
+                Admin.error_message(message)
                 return
+
             if not new_password == re_entered_password:
                 # Display password does not match errors.
+                message='Password does not match'
+                Admin.error_message(message)
                 return
+
             if not strength:
                 # Display new password not strong enough error.
+                message='Password not strong enough'
+                Admin.warning_message(message)
                 return
             root.destroy()
             admin_account_handler.change_password(admin_id, new_password)

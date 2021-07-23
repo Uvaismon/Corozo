@@ -4,9 +4,20 @@ from tkinter import *
 from tkcalendar import *
 from account_manager import customer_account_handler, UserAccountFileHandler
 from ui.admin import Admin
-
+from tkinter import messagebox
 
 class Customer:
+
+    @staticmethod
+    def error_message(message):
+        messagebox.showerror('Error', message)
+
+    @staticmethod
+    def warning_message(message):
+        messagebox.showwarning('Warning', message)
+    @staticmethod
+    def info_message(message):
+        messagebox.showinfo('Info', message)
 
     @staticmethod
     def log_in():
@@ -30,7 +41,9 @@ class Customer:
                               auth['balance'])
             else:
                 # Display authentication failed message.
-                pass
+                message = 'Authentication failed'
+                Customer.error_message(message)
+                return
 
         def admin():
             root.destroy()
@@ -213,13 +226,22 @@ class Customer:
 
             if not authenticated:
                 # Display authentication failed message
+                message = 'Authentication failed'
+                Customer.error_message(message)
                 return
+
             if not new_password == re_entered_password:
                 # Display password does not match errors.
+                message='Password does not match'
+                Customer.warning_message(message)
                 return
+
             if not strength:
                 # Display new password not strong enough error.
+                message='Password not strong enough'
+                Customer.warning_message(message)
                 return
+
             root.destroy()
             customer_account_handler.change_password(account_number, new_password)
 
@@ -267,13 +289,19 @@ class Customer:
         def close_account():
             entered_password = e3.get()
             if customer_account_handler.authenticate(acct_number, entered_password):
+
                 # Display account closed successfully message.
+                message='Account closed successfully'
+                Customer.info_message(message)
+
                 root.destroy()
                 customer_account_handler.delete_account(acct_number)
                 Customer.log_in()
             else:
                 # Display authentication failed message
-                pass
+                message='Authentication failed'
+                Customer.warning_message(message)
+            
 
         root = Tk()
         root.title('Close account')
