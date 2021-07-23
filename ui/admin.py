@@ -136,6 +136,7 @@ class Admin:
                 account_type=account_type,
                 password=password)
             root.destroy()
+            Admin.admin_control_panel()
 
         root = Tk()
         root.title('New Account')
@@ -257,6 +258,8 @@ class Admin:
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
                 TransactionManager.register_transaction(account_number, BANK, entered_amount)
+                root.destroy()
+                Admin.admin_control_panel()
             else:
                 # Display admin authentication failed
                 pass
@@ -267,6 +270,8 @@ class Admin:
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
                 TransactionManager.register_transaction(BANK, account_number, entered_amount)
+                root.destroy()
+                admin.admin_control_panel()
             else:
                 # Display admin authentication failed
                 pass
@@ -342,6 +347,7 @@ class Admin:
                 return
             root.destroy()
             admin_account_handler.change_password(Admin.logged_in_admin, new_password)
+            Admin.admin_control_panel()
 
         root = Tk()
         root.title('Change password')
