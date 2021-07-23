@@ -5,7 +5,7 @@ This package stores all app constants
 import logging
 import os
 
-DATA_DIRECTORY = os.path.join(r'D:\Python\Corozo', 'app_data')
+DATA_DIRECTORY = os.path.join(r'C:\Users\vinay\Desktop\Fs project\Corozo', 'app_data')
 META_DIRECTORY = os.path.join(DATA_DIRECTORY, 'meta')
 
 CUSTOMER_DATA_DIRECTORY = os.path.join(DATA_DIRECTORY, 'customer_data', 'data')

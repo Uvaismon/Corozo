@@ -28,7 +28,8 @@ class Admin:
 
             else:
                 # Display authentication failed message.
-                pass
+                message='Authenticatiion Failed'
+                Admin.error_message(message)
 
         root = Tk()
         root.title('Admin Login')
@@ -357,4 +358,4 @@ if __name__ == '__main__':
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['456', 'Test', 'C'])))
     # data = ReadWrite.file_reader('test.txt')
     # for datum in data:
-    #     print(ReadWrite.unpack(datum))
+    # print(ReadWrite.unpack(datum))
