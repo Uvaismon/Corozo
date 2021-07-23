@@ -4,6 +4,7 @@ from meta import *
 from file_handler.read_write import ReadWrite
 from file_handler import transaction_index
 from transaction.secondary_indexer import SecondaryIndexer
+from account_manager import *
 
 
 class TransactionManager:
@@ -12,7 +13,7 @@ class TransactionManager:
     """
 
     @staticmethod
-    def register_transaction(sender: int, receiver: int, amount: int) -> None:
+    def register_transaction(sender: str, receiver: str, amount: int) -> None:
         """
         Method used to register transaction details.0
         :param sender: Account number of the sender.
@@ -34,12 +35,15 @@ class TransactionManager:
         universal_transaction_data.decrement_free_block_size()
 
         # Create secondary index
-        SecondaryIndexer.insert_index(str(sender), str(date_stamp), str(transaction_id), WITHDRAW_INDICATOR)
-        SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
+        if not sender == BANK:
+            customer_account_handler.update_balance(int(sender), -int(amount))
+            SecondaryIndexer.insert_index(str(sender), str(date_stamp), str(transaction_id), WITHDRAW_INDICATOR)
+        if not receiver == BANK:
+            customer_account_handler.update_balance(int(receiver), int(amount))
+            SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
 
 
 if __name__ == '__main__':
     """
     Debugging area
     """
-    TransactionManager.register_transaction(30, 20, 18000)

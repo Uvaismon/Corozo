@@ -145,7 +145,7 @@ class UserAccountFileHandler:
             return record
         return {}
 
-    def update_balance(self, account_number: int, update_amount):
+    def update_balance(self, account_number: int, update_amount: int):
         """
         Updates account balance of the user.
         :param account_number: account number of the user

@@ -14,6 +14,6 @@ os.makedirs(TRANSACTION_INDEX_DIRECTORY, exist_ok=True)
 os.makedirs(META_DIRECTORY, exist_ok=True)
 os.makedirs(TRANSACTION_SEC_INDEX_DIRECTORY, exist_ok=True)
 
-# universal_data.initialize()
-# user_init.initialize()
+universal_data.initialize()
+user_init.initialize()
 
