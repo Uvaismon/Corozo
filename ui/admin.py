@@ -348,9 +348,9 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    # Admin.admin()
+    Admin.admin()
     # Admin.admin_control_panel()
-    Admin.new_account()
+    # Admin.new_account()
     # Admin.search_transaction_admin()
     # Admin.deposit_withdraw_money()
     # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))

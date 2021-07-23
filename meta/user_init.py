@@ -47,7 +47,11 @@ class UserMetaInit:
             pass
 
 
-if __name__ == '__main__':
+def initialize() -> None:
+    """
+    Initialize users and transaction meta files.
+    :return:
+    """
     UserMetaInit('customer')
     UserMetaInit('admin')
     UserMetaInit('transactor')

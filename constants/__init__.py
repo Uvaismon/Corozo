@@ -21,7 +21,10 @@ TRANSACTION_INDEX_DIRECTORY = os.path.join(DATA_DIRECTORY, 'transaction_data', '
 TRANSACTION_INDEX_META_FILE = os.path.join(TRANSACTION_INDEX_DIRECTORY, 'meta.json')
 
 LOG_FILE = os.path.join(META_DIRECTORY, 'log.ini')
-logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
+
+# with open(LOG_FILE, 'a') as _:
+#     pass
+# logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
 
 BLOCK_SIZE = 3
 MAX_DIGITS = 9

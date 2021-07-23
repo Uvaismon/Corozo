@@ -89,11 +89,12 @@ class UniversalData:
         self.__write_meta(meta_data)
 
 
-if __name__ == '__main__':
+# Universal data initialization
+def initialize() -> None:
     """
-    Initial setup
+    Initilize Universal meta file.
+    :return: None
     """
-    # Universal data initialization
     universal_data = {
         'customer': {
             'next_account_number': '1',
