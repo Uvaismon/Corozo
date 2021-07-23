@@ -3,6 +3,7 @@ from constants import *
 from meta import *
 from file_handler.read_write import ReadWrite
 from file_handler import transaction_index
+from transaction.secondary_indexer import SecondaryIndexer
 
 
 class TransactionManager:
@@ -32,9 +33,13 @@ class TransactionManager:
         universal_transaction_data.update_next_account_number()
         universal_transaction_data.decrement_free_block_size()
 
+        # Create secondary index
+        SecondaryIndexer.insert_index(str(sender), str(date_stamp), str(transaction_id), WITHDRAW_INDICATOR)
+        SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
+
 
 if __name__ == '__main__':
     """
     Debugging area
     """
-    TransactionManager.register_transaction(0, 30, 50000)
+    TransactionManager.register_transaction(30, 20, 18000)

@@ -85,7 +85,7 @@ class Customer:
         This method renders the home window. It takes in the following arguments.
         account number -> int,
         account holder name -> str,
-        account type -> [Savings, Current],
+        account transaction_type -> [Savings, Current],
         account balance -> float.
         The window provides 2 choices to the users.
         The method calls transaction handler if user clicks transact button and settings handler
@@ -119,7 +119,7 @@ class Customer:
         account_holder_name.grid(row=2, column=0, sticky='W', padx=10)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        account_type = Label(root, text="Account type")
+        account_type = Label(root, text="Account transaction_type")
 
         e3 = Label(root, text=acct_type, width=30)
 
@@ -337,7 +337,7 @@ class Customer:
         This method renders the window that displays the users account statement.
         It takes in the following arguments.
         account number -> int,
-        account type -> str
+        account transaction_type -> str
         transaction list -> list of transactions
         """
         pass
@@ -347,7 +347,7 @@ class Customer:
         """
         Frame ID: 008
         This method renders the window that displays that lets users filter their transactions based on time
-        period and type of transaction.
+        period and transaction_type of transaction.
         This method calls transaction filtering window.
         """
 
