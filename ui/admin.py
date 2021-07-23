@@ -76,7 +76,7 @@ class Admin:
             Admin.new_account()
 
         def search_transaction_window():
-            pass
+            Admin.search_transaction_admin()
 
         def add_money_window():
             Admin.deposit_withdraw_money()
@@ -271,7 +271,7 @@ class Admin:
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
                 TransactionManager.register_transaction(BANK, account_number, entered_amount)
                 root.destroy()
-                admin.admin_control_panel()
+                Admin.admin_control_panel()
             else:
                 # Display admin authentication failed
                 pass

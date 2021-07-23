@@ -157,7 +157,7 @@ class UserAccountFileHandler:
         new_rec = ReadWrite.pack(self.__get_data_list(data_dict))
         ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
 
-    def get_balance(self, account_number) -> int:
+    def get_balance(self, account_number: int) -> int:
         """
         :param account_number: Account number of the user
         :return: Balance of the given account.
@@ -166,7 +166,7 @@ class UserAccountFileHandler:
         data_dict = self.__fetch_record(file_name, offset)
         return data_dict['balance']
 
-    def change_password(self, account_number, new_password):
+    def change_password(self, account_number: int, new_password: str):
         """
         Updates the user account password
         :param account_number: Account number of the user
@@ -180,7 +180,7 @@ class UserAccountFileHandler:
         ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
 
     @staticmethod
-    def pass_strength(password):
+    def pass_strength(password: str):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
 
         al_s = re.search(r'[a-z]', password)
