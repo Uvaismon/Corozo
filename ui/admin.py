@@ -4,6 +4,8 @@ from account_manager import *
 from constants import *
 from tkinter import messagebox
 from transaction.transaction_manager import TransactionManager
+from datetime import date
+from ui import account_statement
 
 
 class Admin:
@@ -79,7 +81,7 @@ class Admin:
             Admin.search_transaction_admin()
 
         def add_money_window():
-            Admin.deposit_withdraw_money()
+            Admin.deposit_withdraw_money(0)
 
         def change_password_window():
             root.destroy()
@@ -188,7 +190,17 @@ class Admin:
         """
 
         def search_transaction():
-            pass
+            account_number = int(acnt_no_entry.get())
+            start_month, start_date, start_year = list(map(int, from_entry.get().split('/')))
+            start_year += 2000
+            end_month, end_date, end_year = list(map(int, to_entry.get().split('/')))
+            end_year += 2000
+            start = date(start_year, start_month, start_date)
+            end = date(end_year, end_month, end_date)
+            customer_name = customer_account_handler.get_user_name(account_number)
+            transaction_list = TransactionManager.search_transactions(account_number, start, end)
+            root.destroy()
+            account_statement(transaction_list, account_number, customer_name)
 
         root = Tk()
         root.title('Search Transactions(Admin)')
@@ -222,12 +234,12 @@ class Admin:
             else:
                 set_to.config(command=lambda: set_date(i))
 
-        def validate_actNo():
+        def validate_act_no():
             try:
                 int(acnt_no_entry.get())
                 search_transaction()
-            except:
-                message="Account number must be numeric"
+            except ValueError:
+                message = "Account number must be numeric"
                 Admin.error_message(message)
 
         acnt_no = Label(root, text='Account Number :')
@@ -250,14 +262,13 @@ class Admin:
         set_from = Button(root, text='Set', command=lambda: select_date(0))
         set_from.grid(pady=(10, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
-        search_btn = Button(root, text='Search', command=validate_actNo)
+        search_btn = Button(root, text='Search', command=validate_act_no)
         search_btn.grid(pady=(30, 0), padx=(20, 0), column=2, row=3, sticky=W)
 
         root.mainloop()
 
     @staticmethod
-    def deposit_withdraw_money():
-        op_type = 0
+    def deposit_withdraw_money(op_type):
         """
         Frame ID: 014
         This method renders the window that lets admin handle deposits and withdrawal.
@@ -268,7 +279,7 @@ class Admin:
         """
 
         def withdraw():
-            account_number = str(acnt_no_entry.get())
+            account_number = int(acnt_no_entry.get())
             entered_amount = amount_entry.get()
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
@@ -280,7 +291,7 @@ class Admin:
                 pass
 
         def deposit():
-            account_number = str(acnt_no_entry.get())
+            account_number = int(acnt_no_entry.get())
             entered_amount = amount_entry.get()
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
@@ -303,25 +314,23 @@ class Admin:
         def validate_amount(x):
             try:
                 int(amount_entry.get())
-                if x==0:
+                if x == 0:
                     deposit()
                 else:
                     withdraw()
 
-            except:
+            except ValueError:
                 message = "Amount must be numeric"
                 Admin.error_message(message)
 
-        def validate_actNo(x):
+        def validate_act_no(x):
 
             try:
                 int(acnt_no_entry.get())
                 validate_amount(x)
-            except:
-                message="Account number must be numeric"
+            except ValueError:
+                message = "Account number must be numeric"
                 Admin.error_message(message)
-
-
 
         acnt_no = Label(root, text='Account Number :')
         acnt_no.grid(pady=(50, 0), padx=(20, 0), column=1, row=1, sticky=E)
@@ -343,11 +352,11 @@ class Admin:
 
         if op_type == 0:
             add_withdraw_btn.config(text='Add Money')
-            add_withdraw_btn.config(command=lambda :validate_actNo(0))
+            add_withdraw_btn.config(command=lambda: validate_act_no(0))
 
         else:
             add_withdraw_btn.config(text='Withdraw')
-            add_withdraw_btn.config(command=lambda :validate_actNo(1))
+            add_withdraw_btn.config(command=lambda: validate_act_no(1))
         root.mainloop()
 
     @staticmethod
@@ -356,7 +365,6 @@ class Admin:
         Frame ID: 005
         This method renders window that lets users to change password.
         This method calls password changer when user clicks submit button to change password.
-        :param admin_id: ID of the logged in admin.
         """
 
         def change_password():
@@ -423,4 +431,6 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    Admin.admin()
+    # Admin.admin()
+
+    Admin.search_transaction_admin()

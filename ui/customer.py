@@ -1,11 +1,11 @@
-import datetime
-import tkinter as tk
 from tkinter import *
 from tkcalendar import *
 from account_manager import customer_account_handler, UserAccountFileHandler
 from ui.admin import Admin
 from tkinter import messagebox
 from transaction.transaction_manager import TransactionManager
+from constants import *
+from tkinter import ttk
 
 
 class Customer:
@@ -55,12 +55,12 @@ class Customer:
             root.destroy()
             Admin.admin()
 
-        def validate_actNo():
+        def validate_act_no():
             try:
                 int(e.get())
                 log_in()
-            except:
-                message="Account number must be numeric"
+            except ValueError:
+                message = "Account number must be numeric"
                 Customer.error_message(message)
 
         root = Tk()
@@ -83,7 +83,7 @@ class Customer:
         passcode.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        my_button = Button(root, text="Login", command=validate_actNo)
+        my_button = Button(root, text="Login", command=validate_act_no)
         my_button.grid(row=3, column=1)
         # welcome.grid(row=0, column=0)
 
@@ -225,7 +225,6 @@ class Customer:
         Frame ID: 005
         This method renders window that lets users to change password.
         This method calls password changer when user clicks submit button to change password.
-        :param account_number: Customer account number to change password.
         """
 
         def change_password():
@@ -342,18 +341,6 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def account_statement(acct_number: int, acct_type: str, trans_list: list):
-        """
-        Frame ID: 007
-        This method renders the window that displays the users account statement.
-        It takes in the following arguments.
-        account number -> int,
-        account transaction_type -> str
-        transaction list -> list of transactions
-        """
-        pass
-
-    @staticmethod
     def search_transactions():
         """
         Frame ID: 008
@@ -368,19 +355,19 @@ class Customer:
         root = Tk()
         root.title("Search Transaction")
         root.geometry("500x300")
-        root.minsize(500, 300)
+        root.minsize(600, 400)
         root.maxsize(600, 400)
 
-        def select_date(i):
+        def select_date(cal_pos):
             root.geometry('600x400')
             cal = Calendar(root, selectmode='day', year=2021, month=7, day=15)
-            if i == 0:
+            if cal_pos == 0:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=4, row=3, sticky=W)
             else:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=7, row=3, sticky=E)
 
-            def set_date(i):
-                if i == 0:
+            def set_date(entry_box):
+                if entry_box == 0:
                     from_entry.delete(0, END)
                     from_entry.insert(0, cal.get_date())
                     set_from.grid_forget()
@@ -392,10 +379,10 @@ class Customer:
                 cal.grid_forget()
                 root.geometry('400x300')
 
-            if i == 0:
-                set_from.config(command=lambda: set_date(i))
+            if cal_pos == 0:
+                set_from.config(command=lambda: set_date(cal_pos))
             else:
-                set_to.config(command=lambda: set_date(i))
+                set_to.config(command=lambda: set_date(cal_pos))
 
         by_date = Label(root, text='By Date :')
         by_date.grid(pady=(5, 0), padx=(20, 0), row=2, column=1, sticky=E)
@@ -417,13 +404,14 @@ class Customer:
         set_from = Button(root, text='Set', command=lambda: select_date(0))
         set_from.grid(pady=(5, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
-        acnt_type = Label(root, text='Account Type :')
+        acnt_type = Label(root, text='Transaction type :')
         acnt_type.grid(pady=(20, 0), padx=(20, 0), sticky=E, row=4, column=1)
 
         items = StringVar(root, '1')
         values = {
-            "Current": 'current',
-            "Savings": 'savings'
+            "Deposit": DEPOSIT_INDICATOR,
+            "Withdrawal": WITHDRAW_INDICATOR,
+            "Both": [DEPOSIT_INDICATOR, WITHDRAW_INDICATOR]
         }
         i = 2
         for (text, value) in values.items():
@@ -431,7 +419,7 @@ class Customer:
                                                                            sticky=E)
             i = i + 2
         search = Button(root, text="Search", command=filter_transaction)
-        search.grid(columnspan=6, pady=(30, 0), padx=(20, 0), sticky=E)
+        search.grid(columnspan=7, pady=(30, 0), padx=(30, 0))
         root.mainloop()
 
     @staticmethod
@@ -443,9 +431,9 @@ class Customer:
         """
 
         def send_money():
-            receiver = str(e1.get())
+            receiver = int(e1.get())
             entered_amount = e2.get()
-            TransactionManager.register_transaction(str(Customer.logged_in_customer), receiver, entered_amount)
+            TransactionManager.register_transaction(Customer.logged_in_customer, receiver, entered_amount)
             root.destroy()
             Customer.home()
 
@@ -456,16 +444,16 @@ class Customer:
             try:
                 int(e2.get())
                 send_money()
-            except:
-                message="Amount must be numeric"
+            except ValueError:
+                message = "Amount must be numeric"
                 Customer.error_message(message)
 
-        def validate_actNo():
+        def validate_act_no():
             try:
                 int(e1.get())
                 validate_amount()
-            except:
-                message="Account number must be numeric"
+            except ValueError:
+                message = "Account number must be numeric"
                 Customer.error_message(message)
 
         account_number = Label(root, text="Enter Account Number")
@@ -482,7 +470,7 @@ class Customer:
         amount.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        send = Button(root, text="Send", command=validate_actNo)
+        send = Button(root, text="Send", command=validate_act_no)
         send.grid(row=3, column=0, padx=10, pady=10)
 
         root.mainloop()
@@ -501,3 +489,4 @@ if __name__ == '__main__':
     # Customer.close_account(1234, 2000)
     # Customer.send_money()
     # Customer.search_transactions()
+    Customer.account_statement([['11', '2021-07-24', '20:11:25', '2', '1', '1000']], 100, 'Uvais')

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from constants import *
 from meta import *
 from file_handler.read_write import ReadWrite
@@ -45,38 +45,38 @@ class TransactionManager:
             SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
 
     @staticmethod
-    def search_transactions(account_number: int, start_date: datetime, end_date: datetime) -> list:
+    def search_transactions(account_number: int, start_date: date, end_date: date,
+                            transaction_type: tuple = (DEPOSIT_INDICATOR, WITHDRAW_INDICATOR)) -> list:
         """
+        :param transaction_type: Type of transaction, withdrawal or deposit.
         :param account_number: account number of the customer
         :param start_date: starting date of transaction list.
         :param end_date: ending date of transaction list.
         :return: list of transactions.
         """
         dir_path = os.path.join(TRANSACTION_SEC_INDEX_DIRECTORY, str(account_number))
-        file_names = [str((start_date + timedelta(days=x)).date()) + '.txt'
+        file_names = [str((start_date + timedelta(days=x))) + '.txt'
                       for x in range((end_date - start_date).days + 1)]
 
         transactions = []
 
         for file in file_names:
-            record = ReadWrite.file_reader(file, dir_path)
-            transactions += record
+            transactions += ReadWrite.file_reader(file, dir_path)
 
+        transactions = list(filter(lambda x: x[1] in transaction_type, transactions))
         transaction_records = []
-        print(transactions)
 
         for transaction in transactions:
             file_name, offset = transaction_indexer.fetch_index(int(transaction[0]))
             data = ReadWrite.file_reader(file_name, TRANSACTION_DATA_DIRECTORY, offset, 1)
             transaction_records += data
 
-        print(transaction_records)
-
+        return transaction_records
 
 
 if __name__ == '__main__':
     """
     Debugging area
     """
-    TransactionManager.search_transactions(1, datetime(2021, 7, 20), datetime(2021, 8, 3))
+    # TransactionManager.search_transactions(1, date(2021, 7, 20), date(2021, 8, 3))
     # TransactionManager.register_transaction(2, 1, 1000)

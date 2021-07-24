@@ -145,6 +145,16 @@ class UserAccountFileHandler:
             return record
         return {}
 
+    def get_user_name(self, account_number: int) -> str:
+        """
+        :param account_number: account number of the account holder
+        :return: User name of the account holder
+        """
+        index = customer_indexer.fetch_index(account_number)
+        if not index:
+            return ''
+        return self.__fetch_record(file_name=index[0], offset=index[1])['account_holder_name']
+
     def update_balance(self, account_number: int, update_amount: int):
         """
         Updates account balance of the user.
@@ -215,4 +225,4 @@ if __name__ == '__main__':
     # UserAccountFileHandler('customer').delete_account(25)
     # UserAccountFileHandler('customer').update_balance(2, 100)
     # UserAccountFileHandler('customer').change_password(3, 'SicMu2@')
-    print(UserAccountFileHandler('customer').account_exists(2))
+    print(UserAccountFileHandler('customer').get_user_name(1))
