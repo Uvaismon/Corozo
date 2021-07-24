@@ -83,6 +83,9 @@ class Admin:
             root.destroy()
             Admin.change_password(admin_id)
 
+        def withdraw_money():
+            pass
+
         root = Tk()
         root.title('Admin Control Panel')
         root.geometry('400x300')
@@ -98,8 +101,12 @@ class Admin:
         add_money = Button(root, text='Add Money', padx=59, command=add_money_window)
         add_money.grid(pady=(20, 0), padx=(10, 0), row=2, sticky=W, column=1)
 
-        change_pass = Button(root, text='Change Passwords', padx=30, command=change_password_window)
+        change_pass = Button(root, text=' Change Password ', padx=30, command=change_password_window)
         change_pass.grid(pady=(20, 0), padx=(10, 0), row=2, sticky=W, column=2)
+
+        withdraw_money = Button(root, text='Withdraw Money', padx=30, command=withdraw_money)
+        withdraw_money.grid(pady=(20, 0), padx=(120, 0), row=3, sticky=W, columnspan=3)
+
         root.mainloop()
 
     @staticmethod
@@ -212,6 +219,14 @@ class Admin:
             else:
                 set_to.config(command=lambda: set_date(i))
 
+        def validate_actNo():
+            try:
+                int(acnt_no_entry.get())
+                search_transaction()
+            except:
+                message="Account number must be numeric"
+                Admin.error_message(message)
+
         acnt_no = Label(root, text='Account Number :')
         acnt_no_entry = Entry(root)
         acnt_no.grid(pady=(60, 0), padx=(20, 0), column=1, row=1, sticky=E)
@@ -232,7 +247,7 @@ class Admin:
         set_from = Button(root, text='Set', command=lambda: select_date(0))
         set_from.grid(pady=(10, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
-        search_btn = Button(root, text='Search', command=search_transaction)
+        search_btn = Button(root, text='Search', command=validate_actNo)
         search_btn.grid(pady=(30, 0), padx=(20, 0), column=2, row=3, sticky=W)
 
         root.mainloop()
@@ -264,6 +279,29 @@ class Admin:
         root.minsize(400, 300)
         root.maxsize(600, 400)
 
+        def validate_amount(x):
+            try:
+                int(amount_entry.get())
+                if x==0:
+                    deposit()
+                else:
+                    withdraw()
+
+            except:
+                message = "Amount must be numeric"
+                Admin.error_message(message)
+
+        def validate_actNo(x):
+
+            try:
+                int(acnt_no_entry.get())
+                validate_amount(x)
+            except:
+                message="Account number must be numeric"
+                Admin.error_message(message)
+
+
+
         acnt_no = Label(root, text='Account Number :')
         acnt_no.grid(pady=(50, 0), padx=(20, 0), column=1, row=1, sticky=E)
         acnt_no_entry = Entry(root)
@@ -284,11 +322,11 @@ class Admin:
 
         if op_type == 0:
             add_withdraw_btn.config(text='Add Money')
-            add_withdraw_btn.config(command=deposit)
+            add_withdraw_btn.config(command=lambda :validate_actNo(0))
 
         else:
             add_withdraw_btn.config(text='Withdraw')
-            add_withdraw_btn.config(command=withdraw)
+            add_withdraw_btn.config(command=lambda :validate_actNo(1))
         root.mainloop()
 
     @staticmethod
