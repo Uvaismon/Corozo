@@ -55,6 +55,14 @@ class Customer:
             root.destroy()
             Admin.admin()
 
+        def validate_actNo():
+            try:
+                int(e.get())
+                log_in()
+            except:
+                message="Account number must be numeric"
+                Customer.error_message(message)
+
         root = Tk()
         root.title('Log In')
         root.geometry("400x400")
@@ -75,7 +83,7 @@ class Customer:
         passcode.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        my_button = Button(root, text="LOGIN", command=log_in)
+        my_button = Button(root, text="Login", command=validate_actNo)
         my_button.grid(row=3, column=1)
         # welcome.grid(row=0, column=0)
 
@@ -444,6 +452,22 @@ class Customer:
         root = Tk()
         root.title('Send money')
 
+        def validate_amount():
+            try:
+                int(e2.get())
+                send_money()
+            except:
+                message="Amount must be numeric"
+                Customer.error_message(message)
+
+        def validate_actNo():
+            try:
+                int(e1.get())
+                validate_amount()
+            except:
+                message="Account number must be numeric"
+                Customer.error_message(message)
+
         account_number = Label(root, text="Enter Account Number")
 
         e1 = Entry(root, width=30)
@@ -458,7 +482,7 @@ class Customer:
         amount.grid(row=2, column=0)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        send = Button(root, text="Send", command=send_money)
+        send = Button(root, text="Send", command=validate_actNo)
         send.grid(row=3, column=0, padx=10, pady=10)
 
         root.mainloop()
@@ -469,7 +493,7 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    Customer.log_in()
+    # Customer.log_in()
     # Customer.home(1234, "zabi", "Savings", 5000)
     # Customer.settings()
     # Customer.transact()
