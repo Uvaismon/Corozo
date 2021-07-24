@@ -13,14 +13,16 @@ class TransactionManager:
     """
 
     @staticmethod
-    def register_transaction(sender: str, receiver: str, amount: int) -> None:
+    def register_transaction(sender: str, receiver: str, amount: int) -> int:
         """
         Method used to register transaction details.0
         :param sender: Account number of the sender.
         :param receiver: Account number of the receiver.
         :param amount: Amount send to the receiver by sender.
-        :return: None
+        :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance.
         """
+        if receiver != BANK and not customer_account_handler.account_exists(receiver):
+            return 1
         date_stamp = datetime.now().strftime("%d/%m/%Y")
         time_stamp = datetime.now().strftime("%H:%M:%S")
         transaction_id = universal_transaction_data.get_next_account_number()
