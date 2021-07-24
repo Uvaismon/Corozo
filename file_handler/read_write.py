@@ -46,7 +46,7 @@ class ReadWrite:
 
 
     @staticmethod
-    def file_reader(file_name: str, dir_path: str, offset=0, number_or_records=None) -> list:
+    def file_reader(file_name: str, dir_path: str, offset=0, number_or_records: int = None) -> list:
         """
         This function performs all the operations of reading data from the file.
         It takes 3 arguments of which 1 is a default argument.

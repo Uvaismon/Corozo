@@ -7,4 +7,4 @@ from file_handler.read_write import ReadWrite
 
 customer_indexer = Indexer("customer")
 admin_indexer = Indexer('admin')
-transaction_index = Indexer('transactor')
+transaction_indexer = Indexer('transactor')

@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from constants import *
 from meta import *
 from file_handler.read_write import ReadWrite
-from file_handler import transaction_index
+from file_handler import transaction_indexer
 from transaction.secondary_indexer import SecondaryIndexer
 from account_manager import *
 
@@ -13,7 +13,7 @@ class TransactionManager:
     """
 
     @staticmethod
-    def register_transaction(sender: str, receiver: str, amount: int) -> int:
+    def register_transaction(sender: int, receiver: int, amount: int) -> int:
         """
         Method used to register transaction details.0
         :param sender: Account number of the sender.
@@ -23,8 +23,8 @@ class TransactionManager:
         """
         if receiver != BANK and not customer_account_handler.account_exists(receiver):
             return 1
-        date_stamp = datetime.now().strftime("%d/%m/%Y")
-        time_stamp = datetime.now().strftime("%H:%M:%S")
+        date_stamp = datetime.now().date()
+        time_stamp = datetime.now().strftime('%H:%M:%S')
         transaction_id = universal_transaction_data.get_next_account_number()
         if universal_transaction_data.get_free_block_size() < 1:
             universal_transaction_data.update_current_account_file()
@@ -32,7 +32,7 @@ class TransactionManager:
         data_list = [transaction_id, date_stamp, time_stamp, sender, receiver, amount]
         data_list = list(map(str, data_list))
         index = ReadWrite.insert(file_name, TRANSACTION_DATA_DIRECTORY, data_list)
-        transaction_index.insert_index(1, str(transaction_id), str(index))
+        transaction_indexer.insert_index(1, str(transaction_id), str(index))
         universal_transaction_data.update_next_account_number()
         universal_transaction_data.decrement_free_block_size()
 
@@ -44,8 +44,39 @@ class TransactionManager:
             customer_account_handler.update_balance(int(receiver), int(amount))
             SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
 
+    @staticmethod
+    def search_transactions(account_number: int, start_date: datetime, end_date: datetime) -> list:
+        """
+        :param account_number: account number of the customer
+        :param start_date: starting date of transaction list.
+        :param end_date: ending date of transaction list.
+        :return: list of transactions.
+        """
+        dir_path = os.path.join(TRANSACTION_SEC_INDEX_DIRECTORY, str(account_number))
+        file_names = [str((start_date + timedelta(days=x)).date()) + '.txt'
+                      for x in range((end_date - start_date).days + 1)]
+
+        transactions = []
+
+        for file in file_names:
+            record = ReadWrite.file_reader(file, dir_path)
+            transactions += record
+
+        transaction_records = []
+        print(transactions)
+
+        for transaction in transactions:
+            file_name, offset = transaction_indexer.fetch_index(int(transaction[0]))
+            data = ReadWrite.file_reader(file_name, TRANSACTION_DATA_DIRECTORY, offset, 1)
+            transaction_records += data
+
+        print(transaction_records)
+
+
 
 if __name__ == '__main__':
     """
     Debugging area
     """
+    TransactionManager.search_transactions(1, datetime(2021, 7, 20), datetime(2021, 8, 3))
+    # TransactionManager.register_transaction(2, 1, 1000)
