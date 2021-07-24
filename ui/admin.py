@@ -81,6 +81,7 @@ class Admin:
             Admin.search_transaction_admin()
 
         def add_money_window():
+            root.destroy()
             Admin.deposit_withdraw_money(0)
 
         def change_password_window():
@@ -88,7 +89,8 @@ class Admin:
             Admin.change_password()
 
         def withdraw_money():
-            pass
+            root.destroy()
+            Admin.deposit_withdraw_money(1)
 
         root = Tk()
         root.title('Admin Control Panel')

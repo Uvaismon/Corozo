@@ -487,7 +487,7 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    # Customer.log_in()
+    Customer.log_in()
     # Customer.home(1234, "zabi", "Savings", 5000)
     # Customer.settings()
     # Customer.transact()
@@ -495,4 +495,4 @@ if __name__ == '__main__':
     # Customer.close_account(1234, 2000)
     # Customer.send_money()
     # Customer.search_transactions()
-    Customer.account_statement([['11', '2021-07-24', '20:11:25', '2', '1', '1000']], 100, 'Uvais')
+    # Customer.account_statement([['11', '2021-07-24', '20:11:25', '2', '1', '1000']], 100, 'Uvais')
