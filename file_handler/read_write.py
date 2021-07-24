@@ -36,11 +36,14 @@ class ReadWrite:
             return offset
 
         except FileNotFoundError:
-            file = open(file_path, 'w')
+            file =  open(file_path, 'w')
             return ReadWrite.file_writer(file_name, dir_path, data, offset)
 
         finally:
-            file.close()
+            if file:
+                file.close()
+
+
 
     @staticmethod
     def file_reader(file_name: str, dir_path: str, offset=0, number_or_records=None) -> list:

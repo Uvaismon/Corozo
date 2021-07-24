@@ -3,6 +3,8 @@ from constants import *
 from meta import *
 from file_handler.read_write import ReadWrite
 from file_handler import transaction_index
+from transaction.secondary_indexer import SecondaryIndexer
+from account_manager import *
 
 
 class TransactionManager:
@@ -11,14 +13,16 @@ class TransactionManager:
     """
 
     @staticmethod
-    def register_transaction(sender: int, receiver: int, amount: int) -> None:
+    def register_transaction(sender: str, receiver: str, amount: int) -> int:
         """
         Method used to register transaction details.0
         :param sender: Account number of the sender.
         :param receiver: Account number of the receiver.
         :param amount: Amount send to the receiver by sender.
-        :return: None
+        :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance.
         """
+        if receiver != BANK and not customer_account_handler.account_exists(receiver):
+            return 1
         date_stamp = datetime.now().strftime("%d/%m/%Y")
         time_stamp = datetime.now().strftime("%H:%M:%S")
         transaction_id = universal_transaction_data.get_next_account_number()
@@ -32,9 +36,16 @@ class TransactionManager:
         universal_transaction_data.update_next_account_number()
         universal_transaction_data.decrement_free_block_size()
 
+        # Create secondary index
+        if not sender == BANK:
+            customer_account_handler.update_balance(int(sender), -int(amount))
+            SecondaryIndexer.insert_index(str(sender), str(date_stamp), str(transaction_id), WITHDRAW_INDICATOR)
+        if not receiver == BANK:
+            customer_account_handler.update_balance(int(receiver), int(amount))
+            SecondaryIndexer.insert_index(str(receiver), str(date_stamp), str(transaction_id), DEPOSIT_INDICATOR)
+
 
 if __name__ == '__main__':
     """
     Debugging area
     """
-    TransactionManager.register_transaction(0, 30, 50000)

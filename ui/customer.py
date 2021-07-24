@@ -5,8 +5,13 @@ from tkcalendar import *
 from account_manager import customer_account_handler, UserAccountFileHandler
 from ui.admin import Admin
 from tkinter import messagebox
+from transaction.transaction_manager import TransactionManager
+
 
 class Customer:
+    logged_in_customer = None
+    logged_in_name = None
+    logged_in_type = None
 
     @staticmethod
     def error_message(message):
@@ -36,10 +41,10 @@ class Customer:
             auth = customer_account_handler.authenticate(entered_account, entered_password)
             if auth:
                 root.destroy()
-                Customer.home(auth['account_number'],
-                              auth['account_holder_name'],
-                              auth['account_type'],
-                              auth['balance'])
+                Customer.logged_in_customer = auth['account_number']
+                Customer.logged_in_name = auth['account_holder_name']
+                Customer.logged_in_type = auth['account_type']
+                Customer.home()
             else:
                 # Display authentication failed message.
                 message = 'Authentication failed'
@@ -88,25 +93,22 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def home(acct_number: int, acct_holder_name: str, acct_type: str, balance: float):
+    def home():
         """
         Frame ID: 002
-        This method renders the home window. It takes in the following arguments.
-        account number -> int,
-        account holder name -> str,
-        account type -> [Savings, Current],
-        account balance -> float.
+        This method renders the home window.
         The window provides 2 choices to the users.
         The method calls transaction handler if user clicks transact button and settings handler
             if user clicks settings button.
         """
 
         def transact():
-            pass
+            root.destroy()
+            Customer.transact()
 
         def settings():
             root.destroy()
-            Customer.settings(acct_number)
+            Customer.settings()
 
         root = Tk()
         root.title('Home')
@@ -117,10 +119,10 @@ class Customer:
 
         account_number = Label(root, text="Account Number")
 
-        e1 = Label(root, text=acct_number, width=30)
+        e1 = Label(root, text=Customer.logged_in_customer, width=30)
 
         account_holder_name = Label(root, text="Account holder name: ")
-        e2 = Label(root, text=acct_holder_name, width=30)
+        e2 = Label(root, text=Customer.logged_in_name, width=30)
 
         account_number.grid(row=1, column=0, sticky='W', padx=10)
         e1.grid(row=1, column=1, padx=10, pady=10)
@@ -128,12 +130,12 @@ class Customer:
         account_holder_name.grid(row=2, column=0, sticky='W', padx=10)
         e2.grid(row=2, column=1, padx=10, pady=10)
 
-        account_type = Label(root, text="Account type")
+        account_type = Label(root, text="Account transaction_type")
 
-        e3 = Label(root, text=acct_type, width=30)
+        e3 = Label(root, text=Customer.logged_in_type, width=30)
 
         account_balance = Label(root, text="The balance is: ")
-        e4 = Label(root, text=balance, width=30)
+        e4 = Label(root, text=customer_account_handler.get_balance(Customer.logged_in_customer), width=30)
 
         account_type.grid(row=3, column=0, sticky='W', padx=10)
         e3.grid(row=3, column=1, padx=10, pady=10)
@@ -149,23 +151,22 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def settings(account_number: int):
+    def settings():
         """
         Frame ID: 003
         This method renders the account settings window.
         It provides 2 choices to the users.
         The method calls password changing window if users clicks change password button and account closing window
             if user clicks close account button.
-        :param account_number: account number of the user.
         """
 
         def change_password_window():
             root.destroy()
-            Customer.change_password(account_number)
+            Customer.change_password()
 
         def close_account_window():
             root.destroy()
-            Customer.close_account(account_number)
+            Customer.close_account()
 
         root = Tk()
         root.title('Settings')
@@ -195,10 +196,11 @@ class Customer:
             pass
 
         def search_transaction_window():
-            pass
+            Customer.search_transactions()
 
         def send_money_window():
-            pass
+            root.destroy()
+            Customer.send_money()
 
         root = Tk()
         root.title('Transact')
@@ -218,7 +220,7 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def change_password(account_number: int):
+    def change_password():
         """
         Frame ID: 005
         This method renders window that lets users to change password.
@@ -231,7 +233,7 @@ class Customer:
             new_password = e2.get()
             re_entered_password = e3.get()
             strength = UserAccountFileHandler.pass_strength(new_password)
-            authenticated = customer_account_handler.authenticate(account_number, old_password)
+            authenticated = customer_account_handler.authenticate(Customer.logged_in_customer, old_password)
 
             if not authenticated:
                 # Display authentication failed message
@@ -241,18 +243,19 @@ class Customer:
 
             if not new_password == re_entered_password:
                 # Display password does not match errors.
-                message='Password does not match'
+                message = 'Password does not match'
                 Customer.warning_message(message)
                 return
 
             if not strength:
                 # Display new password not strong enough error.
-                message='Password not strong enough'
+                message = 'Password not strong enough'
                 Customer.warning_message(message)
                 return
 
             root.destroy()
-            customer_account_handler.change_password(account_number, new_password)
+            customer_account_handler.change_password(Customer.logged_in_customer, new_password)
+            Customer.log_in()
 
         root = Tk()
         root.title('Change password')
@@ -285,7 +288,7 @@ class Customer:
         root.mainloop()
 
     @staticmethod
-    def close_account(acct_number: int):
+    def close_account():
         """
         Frame ID: 006
         This method renders the close account window. It takes in the following arguments.
@@ -293,31 +296,30 @@ class Customer:
         account balance -> float
         This method calls close account manager if user chooses to close account:
         """
-        balance = customer_account_handler.get_balance(acct_number)
+        balance = customer_account_handler.get_balance(Customer.logged_in_customer)
 
         def close_account():
             entered_password = e3.get()
-            if customer_account_handler.authenticate(acct_number, entered_password):
+            if customer_account_handler.authenticate(Customer.logged_in_customer, entered_password):
 
                 # Display account closed successfully message.
-                message='Account closed successfully'
+                message = 'Account closed successfully'
                 Customer.info_message(message)
 
                 root.destroy()
-                customer_account_handler.delete_account(acct_number)
+                customer_account_handler.delete_account(Customer.logged_in_customer)
                 Customer.log_in()
             else:
                 # Display authentication failed message
-                message='Authentication failed'
+                message = 'Authentication failed'
                 Customer.warning_message(message)
-            
 
         root = Tk()
         root.title('Close account')
 
         account_number = Label(root, text="Account Number")
 
-        e1 = Label(root, text=acct_number, width=30)
+        e1 = Label(root, text=Customer.log_in(), width=30)
 
         account_balance = Label(root, text="Account Balance is : ")
         e2 = Label(root, text=balance, width=30)
@@ -346,7 +348,7 @@ class Customer:
         This method renders the window that displays the users account statement.
         It takes in the following arguments.
         account number -> int,
-        account type -> str
+        account transaction_type -> str
         transaction list -> list of transactions
         """
         pass
@@ -356,7 +358,7 @@ class Customer:
         """
         Frame ID: 008
         This method renders the window that displays that lets users filter their transactions based on time
-        period and type of transaction.
+        period and transaction_type of transaction.
         This method calls transaction filtering window.
         """
 
@@ -441,7 +443,11 @@ class Customer:
         """
 
         def send_money():
-            pass
+            receiver = str(e1.get())
+            entered_amount = e2.get()
+            TransactionManager.register_transaction(str(Customer.logged_in_customer), receiver, entered_amount)
+            root.destroy()
+            Customer.home()
 
         root = Tk()
         root.title('Send money')

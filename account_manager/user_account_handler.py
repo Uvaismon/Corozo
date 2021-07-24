@@ -145,7 +145,7 @@ class UserAccountFileHandler:
             return record
         return {}
 
-    def update_balance(self, account_number: int, update_amount):
+    def update_balance(self, account_number: int, update_amount: int):
         """
         Updates account balance of the user.
         :param account_number: account number of the user
@@ -157,7 +157,7 @@ class UserAccountFileHandler:
         new_rec = ReadWrite.pack(self.__get_data_list(data_dict))
         ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
 
-    def get_balance(self, account_number) -> int:
+    def get_balance(self, account_number: int) -> int:
         """
         :param account_number: Account number of the user
         :return: Balance of the given account.
@@ -166,7 +166,7 @@ class UserAccountFileHandler:
         data_dict = self.__fetch_record(file_name, offset)
         return data_dict['balance']
 
-    def change_password(self, account_number, new_password):
+    def change_password(self, account_number: int, new_password: str):
         """
         Updates the user account password
         :param account_number: Account number of the user
@@ -179,8 +179,19 @@ class UserAccountFileHandler:
         new_rec = ReadWrite.pack(self.__get_data_list(data_dict))
         ReadWrite.file_writer(file_name, self.data_dir, new_rec, offset)
 
+    def account_exists(self, account_number: int) -> bool:
+        """
+        Checks if the given account number exists or not.
+        :param account_number: User or customer account number.
+        :return: True if the account exists, False if not.
+        """
+        index = self.indexer.fetch_index(account_number)
+        if not index:
+            return False
+        return bool(self.__fetch_record(index[0], index[1]))
+
     @staticmethod
-    def pass_strength(password):
+    def pass_strength(password: str):
         """ This function will take password as argument and returns 1 if password is strong else returns 0"""
 
         al_s = re.search(r'[a-z]', password)
@@ -204,3 +215,4 @@ if __name__ == '__main__':
     # UserAccountFileHandler('customer').delete_account(25)
     # UserAccountFileHandler('customer').update_balance(2, 100)
     # UserAccountFileHandler('customer').change_password(3, 'SicMu2@')
+    print(UserAccountFileHandler('customer').account_exists(2))

@@ -3,9 +3,11 @@ from tkcalendar import *
 from account_manager import *
 from constants import *
 from tkinter import messagebox
+from transaction.transaction_manager import TransactionManager
 
 
 class Admin:
+    logged_in_admin = None
 
     @staticmethod
     def error_message(message):
@@ -28,11 +30,12 @@ class Admin:
             auth = admin_account_handler.authenticate(entered_id, entered_password)
             if auth:
                 root.destroy()
-                Admin.admin_control_panel(auth['account_number'])
+                Admin.logged_in_admin = auth['account_number']
+                Admin.admin_control_panel()
 
             else:
                 # Display authentication failed message.
-                message='Authenticatiion failed'
+                message = 'Authentication failed'
                 Admin.error_message(message)
 
         root = Tk()
@@ -59,14 +62,13 @@ class Admin:
         root.mainloop()
 
     @staticmethod
-    def admin_control_panel(admin_id: int):
+    def admin_control_panel():
         """
         Frame ID: 011
         This method renders window that lets admins perform various operations as mentioned in the docs.
         This method calls account creation window if the admin clicks on create account button, search transaction
             window if the admin clicks on search transaction button, money adding window if the admin clicks on
             add money button and password changer if the user clicks on change password button.
-        :param admin_id: Id of the logged in admin.
         """
 
         def create_new_account_window():
@@ -74,14 +76,14 @@ class Admin:
             Admin.new_account()
 
         def search_transaction_window():
-            pass
+            Admin.search_transaction_admin()
 
         def add_money_window():
-            pass
+            Admin.deposit_withdraw_money()
 
         def change_password_window():
             root.destroy()
-            Admin.change_password(admin_id)
+            Admin.change_password()
 
         def withdraw_money():
             pass
@@ -123,7 +125,7 @@ class Admin:
             password = pass_entry.get()
             if not account_holder_name or not account_type or not password:
                 # Display "Please fill all fields" message
-                message='Please fill all fields'
+                message = 'Please fill all fields'
                 Admin.warning_message(message)
                 return
 
@@ -141,6 +143,7 @@ class Admin:
                 account_type=account_type,
                 password=password)
             root.destroy()
+            Admin.admin_control_panel()
 
         root = Tk()
         root.title('New Account')
@@ -265,10 +268,28 @@ class Admin:
         """
 
         def withdraw():
-            pass
+            account_number = str(acnt_no_entry.get())
+            entered_amount = amount_entry.get()
+            entered_password = str(password_entry.get())
+            if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
+                TransactionManager.register_transaction(account_number, BANK, entered_amount)
+                root.destroy()
+                Admin.admin_control_panel()
+            else:
+                # Display admin authentication failed
+                pass
 
         def deposit():
-            pass
+            account_number = str(acnt_no_entry.get())
+            entered_amount = amount_entry.get()
+            entered_password = str(password_entry.get())
+            if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
+                TransactionManager.register_transaction(BANK, account_number, entered_amount)
+                root.destroy()
+                Admin.admin_control_panel()
+            else:
+                # Display admin authentication failed
+                pass
 
         root = Tk()
         if op_type == 0:
@@ -330,7 +351,7 @@ class Admin:
         root.mainloop()
 
     @staticmethod
-    def change_password(admin_id: int):
+    def change_password():
         """
         Frame ID: 005
         This method renders window that lets users to change password.
@@ -343,27 +364,28 @@ class Admin:
             new_password = e2.get()
             re_entered_password = e3.get()
             strength = UserAccountFileHandler.pass_strength(new_password)
-            authenticated = admin_account_handler.authenticate(admin_id, old_password)
+            authenticated = admin_account_handler.authenticate(Admin.logged_in_admin, old_password)
 
             if not authenticated:
                 # Display authentication failed message
-                message='Authentication failed'
+                message = 'Authentication failed'
                 Admin.error_message(message)
                 return
 
             if not new_password == re_entered_password:
                 # Display password does not match errors.
-                message='Password does not match'
+                message = 'Password does not match'
                 Admin.error_message(message)
                 return
 
             if not strength:
                 # Display new password not strong enough error.
-                message='Password not strong enough'
+                message = 'Password not strong enough'
                 Admin.warning_message(message)
                 return
             root.destroy()
-            admin_account_handler.change_password(admin_id, new_password)
+            admin_account_handler.change_password(Admin.logged_in_admin, new_password)
+            Admin.admin_control_panel()
 
         root = Tk()
         root.title('Change password')
@@ -402,12 +424,3 @@ if __name__ == '__main__':
     """
 
     Admin.admin()
-    # Admin.admin_control_panel()
-    # Admin.new_account()
-    # Admin.search_transaction_admin()
-    # Admin.deposit_withdraw_money()
-    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['123', 'Uvais', 'A'])))
-    # print(ReadWrite.file_writer('test.txt', ReadWrite.pack(['456', 'Test', 'C'])))
-    # data = ReadWrite.file_reader('test.txt')
-    # for datum in data:
-    # print(ReadWrite.unpack(datum))
