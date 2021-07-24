@@ -5,7 +5,8 @@ from ui.admin import Admin
 from tkinter import messagebox
 from transaction.transaction_manager import TransactionManager
 from constants import *
-from tkinter import ttk
+from datetime import date
+from ui import account_statement
 
 
 class Customer:
@@ -350,7 +351,12 @@ class Customer:
         """
 
         def filter_transaction():
-            pass
+            start_month, start_date, start_year = list(map(int, from_entry.get().split('/')))
+            end_month, end_date, end_year = list(map(int, to_entry.get().split('/')))
+            start = date(start_year, start_month, start_date)
+            end = date(end_year, end_month, end_year)
+            root.destroy()
+            TransactionManager.search_transactions(Customer.logged_in_customer, start, end)
 
         root = Tk()
         root.title("Search Transaction")
