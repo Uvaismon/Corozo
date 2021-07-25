@@ -21,7 +21,7 @@ class TransactionManager:
         :param amount: Amount send to the receiver by sender.
         :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance.
         """
-        if receiver != BANK and not customer_account_handler.account_exists(receiver) or\
+        if receiver != BANK and not customer_account_handler.account_exists(receiver) or \
                 sender != BANK and not customer_account_handler.account_exists(sender):
             return 1
         if sender != BANK and customer_account_handler.get_balance(sender) < amount:
@@ -68,6 +68,32 @@ class TransactionManager:
 
         transactions = list(filter(lambda x: x[1] in transaction_type, transactions))
         transaction_records = []
+
+        for transaction in transactions:
+            file_name, offset = transaction_indexer.fetch_index(int(transaction[0]))
+            data = ReadWrite.file_reader(file_name, TRANSACTION_DATA_DIRECTORY, offset, 1)
+            transaction_records += data
+
+        return transaction_records
+
+    @staticmethod
+    def fetch_account_statement(account_number: int) -> list:
+        """
+        Fetches the last 20 transaction details.
+        :param account_number:account number whose transaction details have to be fetched.
+        :return: list of last 20 transactions.
+        """
+        dir_path = os.path.join(TRANSACTION_SEC_INDEX_DIRECTORY, str(account_number))
+        files = os.listdir(dir_path)
+        files.sort(reverse=True)
+        transactions = []
+        transaction_records = []
+
+        for file in files:
+            transactions += ReadWrite.file_reader(file, dir_path)
+            if len(transactions) > 20:
+                transactions = transactions[:20]
+                break
 
         for transaction in transactions:
             file_name, offset = transaction_indexer.fetch_index(int(transaction[0]))

@@ -202,7 +202,8 @@ class Admin:
             customer_name = customer_account_handler.get_user_name(account_number)
             transaction_list = TransactionManager.search_transactions(account_number, start, end)
             root.destroy()
-            account_statement(transaction_list, account_number, customer_name)
+            account_statement(transaction_list, account_number, customer_name,
+                              customer_account_handler.get_balance(account_number))
 
         root = Tk()
         root.title('Search Transactions(Admin)')
@@ -218,8 +219,8 @@ class Admin:
             else:
                 cal.grid(pady=(10, 0), padx=(20, 0), columnspan=7, row=3, sticky=E)
 
-            def set_date(i):
-                if i == 0:
+            def set_date(entry_box):
+                if entry_box == 0:
                     from_entry.delete(0, END)
                     from_entry.insert(0, cal.get_date())
                     set_from.grid_forget()

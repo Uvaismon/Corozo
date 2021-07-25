@@ -193,8 +193,10 @@ class Customer:
             money sending window if user clicks on send money button.
         """
 
-        def account_statement():
-            pass
+        def account_statement_window():
+            account_statement(TransactionManager.fetch_account_statement(Customer.logged_in_customer),
+                              Customer.logged_in_customer, Customer.logged_in_name,
+                              customer_account_handler.get_balance(Customer.logged_in_customer))
 
         def search_transaction_window():
             Customer.search_transactions()
@@ -209,8 +211,8 @@ class Customer:
         root.minsize(400, 200)
         root.maxsize(400, 200)
 
-        account_statement = Button(root, text="Account Statement", command=account_statement)
-        account_statement.grid(row=1, column=0, padx=20, pady=15)
+        account_statement_button = Button(root, text="Account Statement", command=account_statement_window)
+        account_statement_button.grid(row=1, column=0, padx=20, pady=15)
 
         search_transaction_window = Button(root, text="Search Transaction", command=search_transaction_window)
         search_transaction_window.grid(row=2, column=0, padx=20, pady=15)
@@ -357,12 +359,13 @@ class Customer:
             end_year += 2000
             start = date(start_year, start_month, start_date)
             end = date(end_year, end_month, end_date)
-            t_type = list(items.get())
+            t_type = tuple(items.get())
             root.destroy()
 
             account_statement(TransactionManager.search_transactions(Customer.logged_in_customer, start, end, t_type),
                               Customer.logged_in_customer,
-                              customer_account_handler.get_user_name(Customer.logged_in_customer))
+                              customer_account_handler.get_user_name(Customer.logged_in_customer),
+                              customer_account_handler.get_balance(Customer.logged_in_customer))
 
         root = Tk()
         root.title("Search Transaction")
@@ -454,6 +457,7 @@ class Customer:
                 Customer.warning_message('Insufficient message')
                 return
             root.destroy()
+            Customer.info_message('Money sent successfully.')
             Customer.home()
 
         root = Tk()
@@ -508,4 +512,3 @@ if __name__ == '__main__':
     # Customer.close_account(1234, 2000)
     # Customer.send_money()
     # Customer.search_transactions()
-    # Customer.account_statement([['11', '2021-07-24', '20:11:25', '2', '1', '1000']], 100, 'Uvais')
