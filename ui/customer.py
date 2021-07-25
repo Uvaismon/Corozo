@@ -234,7 +234,16 @@ class Customer:
             old_password = e.get()
             new_password = e2.get()
             re_entered_password = e3.get()
-            strength = UserAccountFileHandler.pass_strength(new_password)
+            if len(new_password)<11:
+                if len(new_password)> 5:
+                    strength = UserAccountFileHandler.pass_strength(new_password)
+                else:
+                    message = 'Password length should be greater than 6 characters and less than 10 characters.'
+                    Customer.info_message(message)
+            else:
+                message='Password length should be greater than 6 characters and less than 10 characters.'
+                Customer.info_message(message)
+
             authenticated = customer_account_handler.authenticate(Customer.logged_in_customer, old_password)
 
             if not authenticated:
@@ -255,6 +264,8 @@ class Customer:
                 Customer.warning_message(message)
                 return
 
+            message='Password changed'
+            Customer.info_message(message)
             root.destroy()
             customer_account_handler.change_password(Customer.logged_in_customer, new_password)
             Customer.log_in()
@@ -424,8 +435,8 @@ class Customer:
 
         items = StringVar(root, '1')
         values = {
-            "Deposit": DEPOSIT_INDICATOR,
-            "Withdrawal": WITHDRAW_INDICATOR,
+            "Credited": DEPOSIT_INDICATOR,
+            "Debited": WITHDRAW_INDICATOR,
             "Both": (DEPOSIT_INDICATOR, WITHDRAW_INDICATOR)
         }
         i = 2
@@ -456,8 +467,8 @@ class Customer:
             if transaction_status == 2:
                 Customer.warning_message('Insufficient message')
                 return
-            root.destroy()
             Customer.info_message('Money sent successfully.')
+            root.destroy()
             Customer.home()
 
         root = Tk()
@@ -480,11 +491,9 @@ class Customer:
                 Customer.error_message(message)
 
         account_number = Label(root, text="Enter Account Number")
-
         e1 = Entry(root, width=30)
 
         amount = Label(root, text="Enter Amount")
-
         e2 = Entry(root, width=30)
 
         account_number.grid(row=1, column=0)
