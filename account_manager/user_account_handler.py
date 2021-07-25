@@ -170,10 +170,12 @@ class UserAccountFileHandler:
     def get_balance(self, account_number: int) -> int:
         """
         :param account_number: Account number of the user
-        :return: Balance of the given account.
+        :return: Balance of the given account, -1 if account does not exists.
         """
-        file_name, offset = self.indexer.fetch_index(account_number)
-        data_dict = self.__fetch_record(file_name, offset)
+        record = self.indexer.fetch_index(account_number)
+        if not record:
+            return -1
+        data_dict = self.__fetch_record(record[0], record[1])
         return data_dict['balance']
 
     def change_password(self, account_number: int, new_password: str):

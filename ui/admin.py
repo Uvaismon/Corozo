@@ -282,22 +282,31 @@ class Admin:
 
         def withdraw():
             account_number = int(acnt_no_entry.get())
-            entered_amount = amount_entry.get()
+            entered_amount = int(amount_entry.get())
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
-                TransactionManager.register_transaction(account_number, BANK, entered_amount)
+                transaction_status = TransactionManager.register_transaction(account_number, BANK, entered_amount)
+                if transaction_status == 1:
+                    Admin.error_message('Account number does not exists')
+                    return
+                if transaction_status == 2:
+                    Admin.warning_message('Insufficient balance')
+                    return
                 root.destroy()
                 Admin.admin_control_panel()
             else:
                 # Display admin authentication failed
-                pass
+                Admin.error_message('Authentication failed.')
 
         def deposit():
             account_number = int(acnt_no_entry.get())
             entered_amount = amount_entry.get()
             entered_password = str(password_entry.get())
             if admin_account_handler.authenticate(Admin.logged_in_admin, entered_password):
-                TransactionManager.register_transaction(BANK, account_number, entered_amount)
+                transaction_status = TransactionManager.register_transaction(BANK, account_number, entered_amount)
+                if transaction_status == 1:
+                    Admin.error_message('Account number does not exists.')
+                    return
                 root.destroy()
                 Admin.admin_control_panel()
             else:
@@ -433,6 +442,6 @@ if __name__ == '__main__':
     If you have to debug and test any of the CorozoUI class methods, please do it in this block.
     """
 
-    # Admin.admin()
+    Admin.admin()
 
-    Admin.search_transaction_admin()
+    # Admin.search_transaction_admin()

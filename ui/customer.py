@@ -353,10 +353,16 @@ class Customer:
         def filter_transaction():
             start_month, start_date, start_year = list(map(int, from_entry.get().split('/')))
             end_month, end_date, end_year = list(map(int, to_entry.get().split('/')))
+            start_year += 2000
+            end_year += 2000
             start = date(start_year, start_month, start_date)
-            end = date(end_year, end_month, end_year)
+            end = date(end_year, end_month, end_date)
+            t_type = list(items.get())
             root.destroy()
-            TransactionManager.search_transactions(Customer.logged_in_customer, start, end)
+
+            account_statement(TransactionManager.search_transactions(Customer.logged_in_customer, start, end, t_type),
+                              Customer.logged_in_customer,
+                              customer_account_handler.get_user_name(Customer.logged_in_customer))
 
         root = Tk()
         root.title("Search Transaction")
@@ -410,14 +416,14 @@ class Customer:
         set_from = Button(root, text='Set', command=lambda: select_date(0))
         set_from.grid(pady=(5, 0), row=2, column=3, padx=(10, 0), sticky=W)
 
-        acnt_type = Label(root, text='Transaction type :')
-        acnt_type.grid(pady=(20, 0), padx=(20, 0), sticky=E, row=4, column=1)
+        transaction_type = Label(root, text='Transaction type :')
+        transaction_type.grid(pady=(20, 0), padx=(20, 0), sticky=E, row=4, column=1)
 
         items = StringVar(root, '1')
         values = {
             "Deposit": DEPOSIT_INDICATOR,
             "Withdrawal": WITHDRAW_INDICATOR,
-            "Both": [DEPOSIT_INDICATOR, WITHDRAW_INDICATOR]
+            "Both": (DEPOSIT_INDICATOR, WITHDRAW_INDICATOR)
         }
         i = 2
         for (text, value) in values.items():
@@ -438,8 +444,15 @@ class Customer:
 
         def send_money():
             receiver = int(e1.get())
-            entered_amount = e2.get()
-            TransactionManager.register_transaction(Customer.logged_in_customer, receiver, entered_amount)
+            entered_amount = int(e2.get())
+            transaction_status = TransactionManager.register_transaction(Customer.logged_in_customer, receiver,
+                                                                         entered_amount)
+            if transaction_status == 1:
+                Customer.error_message('Account number does not exists.')
+                return
+            if transaction_status == 2:
+                Customer.warning_message('Insufficient message')
+                return
             root.destroy()
             Customer.home()
 

@@ -12,6 +12,7 @@ def account_statement(transaction_list: list, account_number: int, customer_name
     transaction list -> list of transactions
     """
     root = Tk()
+    root.title('Transaction details.')
     root.maxsize(630, 580)
     root.minsize(630, 580)
     account_number_label = Label(root, text=f'Account number: {account_number}')

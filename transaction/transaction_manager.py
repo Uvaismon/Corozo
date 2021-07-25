@@ -21,8 +21,11 @@ class TransactionManager:
         :param amount: Amount send to the receiver by sender.
         :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance.
         """
-        if receiver != BANK and not customer_account_handler.account_exists(receiver):
+        if receiver != BANK and not customer_account_handler.account_exists(receiver) or\
+                sender != BANK and not customer_account_handler.account_exists(sender):
             return 1
+        if sender != BANK and customer_account_handler.get_balance(sender) < amount:
+            return 2
         date_stamp = datetime.now().date()
         time_stamp = datetime.now().strftime('%H:%M:%S')
         transaction_id = universal_transaction_data.get_next_account_number()
@@ -80,3 +83,4 @@ if __name__ == '__main__':
     """
     # TransactionManager.search_transactions(1, date(2021, 7, 20), date(2021, 8, 3))
     # TransactionManager.register_transaction(2, 1, 1000)
+    print(customer_account_handler.account_exists(1000))
