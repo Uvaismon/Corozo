@@ -19,8 +19,11 @@ class TransactionManager:
         :param sender: Account number of the sender.
         :param receiver: Account number of the receiver.
         :param amount: Amount send to the receiver by sender.
-        :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance.
+        :return: 0 if transaction is successful, 1 if account doesn't exists and 2 if insufficient balance, 3 transfer
+                attempt to same account.
         """
+        if sender == receiver:
+            return 3
         if receiver != BANK and not customer_account_handler.account_exists(receiver) or \
                 sender != BANK and not customer_account_handler.account_exists(sender):
             return 1

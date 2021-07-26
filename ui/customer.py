@@ -467,6 +467,9 @@ class Customer:
             if transaction_status == 2:
                 Customer.warning_message('Insufficient message')
                 return
+            if transaction_status == 3:
+                Customer.error_message('Cannot perform self transfer.')
+                return
             Customer.info_message('Money sent successfully.')
             root.destroy()
             Customer.home()
