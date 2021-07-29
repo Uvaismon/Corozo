@@ -240,9 +240,11 @@ class Customer:
                 else:
                     message = 'Password length should be greater than 6 characters and less than 10 characters.'
                     Customer.info_message(message)
+                    return
             else:
                 message='Password length should be greater than 6 characters and less than 10 characters.'
                 Customer.info_message(message)
+                return
 
             authenticated = customer_account_handler.authenticate(Customer.logged_in_customer, old_password)
 
@@ -311,7 +313,7 @@ class Customer:
         """
         balance = customer_account_handler.get_balance(Customer.logged_in_customer)
 
-        def close_account():
+        def delete_account():
             entered_password = e3.get()
             if customer_account_handler.authenticate(Customer.logged_in_customer, entered_password):
 
@@ -332,7 +334,7 @@ class Customer:
 
         account_number = Label(root, text="Account Number")
 
-        e1 = Label(root, text=Customer.log_in(), width=30)
+        e1 = Label(root, text=Customer.logged_in_customer, width=30)
 
         account_balance = Label(root, text="Account Balance is : ")
         e2 = Label(root, text=balance, width=30)
@@ -349,8 +351,8 @@ class Customer:
         password.grid(row=3, column=0)
         e3.grid(row=3, column=1, padx=10, pady=10)
 
-        close_account = Button(root, text="Close", command=close_account)
-        close_account.grid(row=4, column=0, padx=30, pady=15)
+        close_account_button = Button(root, text="Close", command=delete_account)
+        close_account_button.grid(row=4, column=0, padx=30, pady=15)
 
         root.mainloop()
 
@@ -521,6 +523,6 @@ if __name__ == '__main__':
     # Customer.settings()
     # Customer.transact()
     # Customer.change_password()
-    # Customer.close_account(1234, 2000)
+    # Customer.close_account()
     # Customer.send_money()
     # Customer.search_transactions()
