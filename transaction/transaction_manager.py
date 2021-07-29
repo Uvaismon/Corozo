@@ -93,7 +93,7 @@ class TransactionManager:
         transaction_records = []
 
         for file in files:
-            transactions += ReadWrite.file_reader(file, dir_path)
+            transactions += ReadWrite.file_reader(file, dir_path)[::-1]
             if len(transactions) > 20:
                 transactions = transactions[:20]
                 break

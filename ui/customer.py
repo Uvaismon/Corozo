@@ -465,7 +465,7 @@ class Customer:
                 Customer.error_message('Account number does not exists.')
                 return
             if transaction_status == 2:
-                Customer.warning_message('Insufficient message')
+                Customer.warning_message('Insufficient balance')
                 return
             if transaction_status == 3:
                 Customer.error_message('Cannot perform self transfer.')
