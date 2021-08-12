@@ -234,15 +234,15 @@ class Customer:
             old_password = e.get()
             new_password = e2.get()
             re_entered_password = e3.get()
-            if len(new_password)<11:
-                if len(new_password)> 5:
+            if len(new_password) < 11:
+                if len(new_password) > 5:
                     strength = UserAccountFileHandler.pass_strength(new_password)
                 else:
                     message = 'Password length should be greater than 6 characters and less than 10 characters.'
                     Customer.info_message(message)
                     return
             else:
-                message='Password length should be greater than 6 characters and less than 10 characters.'
+                message = 'Password length should be greater than 6 characters and less than 10 characters.'
                 Customer.info_message(message)
                 return
 
@@ -266,7 +266,7 @@ class Customer:
                 Customer.warning_message(message)
                 return
 
-            message='Password changed'
+            message = 'Password changed'
             Customer.info_message(message)
             root.destroy()
             customer_account_handler.change_password(Customer.logged_in_customer, new_password)

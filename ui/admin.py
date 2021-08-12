@@ -18,9 +18,11 @@ class Admin:
     @staticmethod
     def warning_message(message):
         messagebox.showwarning('Warning', message)
+
     @staticmethod
     def info_message(message):
         messagebox.showinfo('Info', message)
+
     @staticmethod
     def admin():
         """
@@ -134,8 +136,8 @@ class Admin:
                 message = 'Please fill all fields'
                 Admin.warning_message(message)
                 return
-            if len(password)<11:
-                if len(password)> 5:
+            if len(password) < 11:
+                if len(password) > 5:
                     if not UserAccountFileHandler.pass_strength(password):
                         # Display Password isn't strong enough message.
                         # After displaying the error message, it should again render account creation window
@@ -144,21 +146,19 @@ class Admin:
                         Admin.warning_message(message)
                         return
                     password = password + ' ' * (PASSWORD_SIZE - len(password))
-                    customer_account_handler.create_account(
+                    account_number = customer_account_handler.create_account(
                         account_holder_name=account_holder_name,
                         account_type=account_type,
                         password=password)
+                    Admin.info_message(f'Account created with account number: {account_number}')
                     root.destroy()
                     Admin.admin_control_panel()
                 else:
                     message = 'Password length should be greater than 6 characters and less than 10 characters.'
                     Admin.info_message(message)
             else:
-                message='Password length should be greater than 6 characters and less than 10 characters.'
+                message = 'Password length should be greater than 6 characters and less than 10 characters.'
                 Admin.info_message(message)
-
-
-
 
         root = Tk()
         root.title('New Account')
@@ -394,14 +394,14 @@ class Admin:
             old_password = e.get()
             new_password = e2.get()
             re_entered_password = e3.get()
-            if len(new_password)<11:
-                if len(new_password)> 5:
+            if len(new_password) < 11:
+                if len(new_password) > 5:
                     strength = UserAccountFileHandler.pass_strength(new_password)
                 else:
                     message = 'Password length should be greater than 6 characters and less than 10 characters.'
                     Customer.info_message(message)
             else:
-                message='Password length should be greater than 6 characters and less than 10 characters.'
+                message = 'Password length should be greater than 6 characters and less than 10 characters.'
                 Customer.info_message(message)
 
             authenticated = admin_account_handler.authenticate(Admin.logged_in_admin, old_password)
@@ -423,7 +423,7 @@ class Admin:
                 message = 'Password not strong enough'
                 Admin.warning_message(message)
                 return
-            message='Password Changed'
+            message = 'Password Changed'
             Admin.info_message(message)
             root.destroy()
             admin_account_handler.change_password(Admin.logged_in_admin, new_password)
